@@ -9,7 +9,7 @@ import type { ChatDeleteMode } from "@/src/core";
 import { DumbbellIcon, PanelLeftCloseIcon, PanelLeftOpenIcon, PlusIcon, SearchIcon, SettingsIcon } from "lucide-react";
 import { ActivitySection } from "@/components/activity-dock";
 import { CoverageMenuBlock } from "@/components/extraction-coverage";
-import { LhMark } from "@/components/lh-mark";
+import { MySoAgentsMark } from "@/components/myso-agents-mark";
 import { BrailleSpinner } from "@/components/braille-spinner";
 import { KeyboardShortcuts } from "@/components/keyboard-shortcuts";
 import { SettingsDialogProvider, useSettingsDialog } from "@/components/settings/settings-dialog.tsx";
@@ -41,7 +41,7 @@ const STORAGE_KEY = "myso-agents:sidebar-open";
  * rendered = pref && !narrow, where pref is the persisted user choice.
  * Manual closes persist and stay closed; auto-close does not touch the
  * preference. Opening the sidebar while narrow asks the Electron shell to
- * widen the window to the threshold (window.lh.expandWindow, IPC in
+ * widen the window to the threshold (window.mysoAgents.expandWindow, IPC in
  * electron/main.cjs) — the resize listener flips `narrow` and the sidebar
  * appears. In the plain browser there is no window to widen and no
  * suppression — a narrow tab opens the sidebar if the user says so.
@@ -57,9 +57,10 @@ const IS_ELECTRON = typeof navigator !== "undefined" && navigator.userAgent.incl
 declare global {
 	interface Window {
 		/** Preload bridge (electron/preload.cjs) — Electron only, absent in the browser. */
-		lh?: {
+		mysoAgents?: {
 			/** Read-only host OS; determines the native-control gutter. */
 			platform?: string;
+            myso?: { connect: () => Promise<{ connected: boolean; cancelled?: boolean; error?: string; custodyAccessToken?: string }>; cancel: () => Promise<{ cancelled: boolean }>; logout: () => Promise<{ ok: boolean }> };
 			chatgpt?: ChatGPTControlBridge;
 			expandWindow: () => void;
 			/** The zoom truth (owner round 7): subscribes to "myso-agents:zoom" pushes; returns unsubscribe. */
@@ -83,7 +84,7 @@ export function useSidebar() {
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
-		const bridge = window.lh?.chatgpt;
+		const bridge = window.mysoAgents?.chatgpt;
 		if (!bridge) return;
 		const off = bridge.onChange(() => notifySettingsSaved("keys"));
 		notifySettingsSaved("keys"); // cover changes missed before this root-lifetime subscription
@@ -97,13 +98,13 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		// Electron shell detection (merged chrome, 2026-09-17): keys the
-		// .lh-electron CSS (app/globals.css) that turns the header bands
+		// .myso-electron CSS (app/globals.css) that turns the header bands
 		// into the window's drag surface. Post-mount only — server HTML
 		// and first client render must agree (no hydration mismatch),
 		// and in the plain browser the class never appears.
 		if (IS_ELECTRON) {
-			document.documentElement.classList.add("lh-electron");
-			document.documentElement.dataset.lhPlatform = window.lh?.platform ?? "";
+			document.documentElement.classList.add("myso-electron");
+			document.documentElement.dataset.mysoPlatform = window.mysoAgents?.platform ?? "";
 		}
 
 		// THE ZOOM TRUTH (owner round 7, 2026-10-05): ⌘±/⌘0 zoom the UI
@@ -112,9 +113,9 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 		// their RENDERED size never moves. getZoom covers the first-paint
 		// race; every later change arrives as an myso-agents:zoom push.
 		const setZoomVar = (factor: number) =>
-			document.documentElement.style.setProperty("--lh-zoom", String(factor));
-		const off = window.lh?.onZoom?.(setZoomVar);
-		void window.lh?.getZoom?.().then(setZoomVar);
+			document.documentElement.style.setProperty("--myso-agents-zoom", String(factor));
+		const off = window.mysoAgents?.onZoom?.(setZoomVar);
+		void window.mysoAgents?.getZoom?.().then(setZoomVar);
 
 		const stored = localStorage.getItem(STORAGE_KEY);
 		// Default: open (first run introduces the sidebar).
@@ -144,7 +145,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 		if (narrow && !open) {
 			localStorage.setItem(STORAGE_KEY, "0");
 			setOpen(true);
-			window.lh?.expandWindow();
+			window.mysoAgents?.expandWindow();
 			return;
 		}
 		setOpen((v) => {
@@ -191,7 +192,7 @@ export function SidebarToggle() {
 	return (
 		<span
 			className={cn(
-				"sidebar-motion lh-no-drag relative flex h-9 shrink-0 overflow-hidden duration-200",
+				"sidebar-motion myso-no-drag relative flex h-9 shrink-0 overflow-hidden duration-200",
 				open ? "w-0 -mr-3" : "w-9 mr-0 lh-closed-toggle",
 			)}
 		>
@@ -662,9 +663,9 @@ function SessionsSidebar() {
 						<Link
 							href="/"
 							aria-label="Home"
-							className="lh-no-drag flex size-9 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50"
+							className="myso-no-drag flex size-9 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50"
 						>
-							<LhMark className="size-6" />
+							<MySoAgentsMark className="size-6" />
 						</Link>
 					</Hint>
 					<Hint label="Close sidebar" action="toggle-sidebar">
@@ -673,7 +674,7 @@ function SessionsSidebar() {
 							size="icon"
 							aria-label="Close sidebar"
 							onClick={toggle}
-							className="lh-no-drag"
+							className="myso-no-drag"
 						>
 							<PanelLeftCloseIcon className="size-4" />
 						</Button>

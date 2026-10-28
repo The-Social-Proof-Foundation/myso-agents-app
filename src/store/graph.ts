@@ -315,9 +315,10 @@ function writeSourceMap(map: Record<string, NotesSource>): void {
 {
 	const graphDir = path.dirname(LEDGER_FILES.nodes);
 	for (const legacy of ["edges.jsonl", "events.jsonl"]) {
-		const file = path.join(graphDir, legacy);
+		// The ledger directory follows MYSO_AGENTS_DATA_DIR and is not a build input.
+		const file = path.join(/*turbopackIgnore: true*/ graphDir, legacy);
 		try {
-			if (fs.existsSync(file)) {
+			if (fs.existsSync(/*turbopackIgnore: true*/ file)) {
 				fs.rmSync(file);
 				console.info(`[graph-store] purged legacy ledger: ${file}`);
 			}

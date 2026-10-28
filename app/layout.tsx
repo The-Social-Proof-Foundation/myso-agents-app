@@ -1,41 +1,14 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
+import { ThemeProvider } from "next-themes";
+import { MySoWalletProviders } from "@/components/myso-wallet-providers";
 import "katex/dist/katex.min.css";
 import "./globals.css";
-import { AppShell, SidebarProvider } from "@/components/sidebar";
-import { ActivityProvider } from "@/components/activity-dock";
-import { ServerEventsProvider } from "@/components/server-events";
-import { AppearanceProvider } from "@/components/settings/appearance";
-import UpdateBanner from "@/components/update-banner";
-
-// Chrome = JetBrains Mono, teaching prose = Source Sans 3, titles = CMU
-// Serif (the bundled lh-cmu @font-face in globals.css — no CDN).
-const ui = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
-const prose = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans3" });
-
-export const metadata: Metadata = {
-	title: "MySo Agents",
-	description: "Coordinate tasks, agents, encrypted rooms, and private knowledge access on MySo.",
-};
-
+import "./myso.css";
+const body = localFont({ src: "../public/fonts/space-grotesk-latin-wght-normal.woff2", weight: "300 700", variable: "--font-myso-body", display: "swap" });
+const display = localFont({ src: "../public/fonts/chakra-petch-latin-600-normal.woff2", weight: "600", variable: "--font-myso-display", display: "swap" });
+const brand = localFont({ src: "../public/fonts/chakra-petch-latin-400-normal.woff2", weight: "400", variable: "--font-myso-brand", display: "swap" });
+export const metadata: Metadata = { title: "MySo Agents", description: "Coordinate work, agents, encrypted rooms and private knowledge access on MySo." };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-	return (
-		<html lang="en" className={`dark ${ui.variable} ${prose.variable}`}>
-			<body className="min-h-dvh antialiased">
-			{/* The notification channel rides OUTSIDE everything: sidebar, dock,
-				 and pages all subscribe as the polls retire (push S3, 2026-10-02). */}
-			<ServerEventsProvider>
-				<AppearanceProvider>
-					<SidebarProvider>
-						<ActivityProvider>
-							<AppShell>{children}</AppShell>
-						</ActivityProvider>
-					</SidebarProvider>
-				</AppearanceProvider>
-			</ServerEventsProvider>
-			{/* Auto-update banner (Wave C): fixed card, Electron-only pushes. */}
-			<UpdateBanner />
-		</body>
-		</html>
-	);
+    return <html lang="en" suppressHydrationWarning className={`${body.variable} ${display.variable} ${brand.variable}`}><body><ThemeProvider attribute="class" defaultTheme="system" enableSystem><MySoWalletProviders>{children}</MySoWalletProviders></ThemeProvider></body></html>;
 }

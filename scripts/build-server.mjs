@@ -76,8 +76,18 @@ for (const extra of ["dist", path.join("node_modules", "electron")]) {
 	}
 }
 
-// 3) Sanity: the runtime-read prompt assets must be present (the teacher
-//    agent reads them from disk at request time).
+// 3) The teacher agent reads prompt markdown from disk. Next's tracer
+//    misses those runtime reads, so copy them from the repo when present.
+const promptDir = path.join(ROOT, "src", "agent", "prompts");
+if (exists(promptDir)) {
+	copyTree(promptDir, path.join(STANDALONE, "src", "agent", "prompts"));
+}
+const basePrompt = path.join(ROOT, "src", "agent", "system-prompt.md");
+if (exists(basePrompt)) {
+	const destination = path.join(STANDALONE, "src", "agent", "system-prompt.md");
+	fs.mkdirSync(path.dirname(destination), { recursive: true });
+	fs.copyFileSync(basePrompt, destination);
+}
 for (const asset of [
 	path.join("src", "agent", "system-prompt.md"),
 	path.join("src", "agent", "prompts", "teacher", "20-teaching.md"),

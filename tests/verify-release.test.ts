@@ -176,7 +176,7 @@ describe("release gate — packaging-config drift guard", () => {
 			const pkg = label === "package name" ? { ...realPkg, name: "other" } : realPkg;
 			const verdict = verifyConfigAssumptions(config, pkg);
 			assert.ok(!verdict.ok);
-			assert.match(verdict.errors.join("\n"), /expected names no longer hold|would not land in the draft|no longer "learnharness"|productName is /);
+			assert.match(verdict.errors.join("\n"), /expected names no longer hold|publish must stay disabled|no longer "myso-agents"|productName is /);
 		});
 	}
 });

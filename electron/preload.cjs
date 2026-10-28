@@ -4,20 +4,20 @@
  * on (electron/main.cjs), so this file is the renderer's entire access to
  * Electron — keep it a minimal, explicit API surface.
  *
- *   window.lh.platform — read-only OS identity for native window-control
+ *   window.mysoAgents.platform — read-only OS identity for native window-control
  *   gutters (darwin: left traffic lights; win32/linux: right overlay).
  *
- *   window.lh.expandWindow() — widen the window to the sidebar auto-close
+ *   window.mysoAgents.expandWindow() — widen the window to the sidebar auto-close
  *   threshold (928px) when the sidebar is opened below it. The main
  *   process clamps: no-op if the window is already wide enough.
  *
- *   window.lh.onZoom(cb) / window.lh.getZoom() — the zoom truth (owner
+ *   window.mysoAgents.onZoom(cb) / window.mysoAgents.getZoom() — the zoom truth (owner
  *   round 7, 2026-10-05): every ⌘±/⌘0 change arrives as "myso-agents:zoom" with
  *   the new factor; getZoom covers the first-paint race. The renderer
- *   publishes it as --lh-zoom so physical-constant lengths (the traffic-
+ *   publishes it as --myso-agents-zoom so physical-constant lengths (the traffic-
  *   light gutter) can divide by it.
  *
- *   window.lh.onUpdateStatus(cb) / window.lh.installUpdate() — the
+ *   window.mysoAgents.onUpdateStatus(cb) / window.mysoAgents.installUpdate() — the
  *   auto-update channel (Wave C, 2026-10-10): "myso-agents:update-status" pushes
  *   {status:"downloaded", version} once an update is staged; installUpdate
  *   asks main to kill the server and quit-and-install. Browser builds:
@@ -27,8 +27,13 @@
  */
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("lh", {
+contextBridge.exposeInMainWorld("mysoAgents", {
 	platform: process.platform,
+    myso: {
+        connect: () => ipcRenderer.invoke("myso-agents:account:connect"),
+        cancel: () => ipcRenderer.invoke("myso-agents:account:cancel"),
+        logout: () => ipcRenderer.invoke("myso-agents:account:logout"),
+    },
 	chatgpt: {
 		status: () => ipcRenderer.invoke("myso-agents:chatgpt:control", { op: "status" }),
 		login: (id) => ipcRenderer.invoke("myso-agents:chatgpt:control", { op: "login", id }),

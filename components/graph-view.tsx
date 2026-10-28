@@ -1573,7 +1573,7 @@ export function GraphView({
 			    Coverage renders even when the graph is EMPTY — an empty
 			    graph with unextracted sessions is exactly when it matters
 			    (extract → the graph gains nodes).
-			    lh-no-drag (2026-09-17): home.tsx's floating drag strip
+			    myso-no-drag (2026-09-17): home.tsx's floating drag strip
 			    underlays this row — Electron's drag mask ignores z-index,
 			    so without an explicit carve-out the controls were
 			    unclickable in the desktop app (owner report). The old
@@ -1588,7 +1588,7 @@ export function GraphView({
 			    against the full-bleed parent) — the row NEVER wraps (owner
 			    rejected the two-row fold); in narrow windows the search is
 			    the flexible element and shrinks instead. */}
-			<div className="lh-no-drag lh-wco-floating absolute right-2 top-2 z-10 flex max-w-[calc(100%-5.5rem)] flex-col items-end gap-2">
+			<div className="myso-no-drag myso-wco-floating absolute right-2 top-2 z-10 flex max-w-[calc(100%-5.5rem)] flex-col items-end gap-2">
 			{/* z-20 (2026-09-20): the row paints above the cost number below
 			    it — without this, the later-in-DOM cost control layered over
 			    the settings/coverage dropdowns (owner report), still hoverable
@@ -1640,10 +1640,10 @@ export function GraphView({
 					// Positioned imperatively in the layout effect above; hidden
 					// until placed so the flip never flashes in the wrong spot.
 					style={{ visibility: "hidden", left: 0, top: 0 }}
-					// lh-no-drag: the card is placed anywhere on the canvas —
+					// myso-no-drag: the card is placed anywhere on the canvas —
 					// when it lands in the top strip it must stay interactive
 					// over home.tsx's drag surface (2026-09-17).
-					className="lh-no-drag absolute z-10 w-80 max-w-[calc(100%-1rem)] rounded-xl border bg-card p-4 text-left shadow-lg"
+					className="myso-no-drag absolute z-10 w-80 max-w-[calc(100%-1rem)] rounded-xl border bg-card p-4 text-left shadow-lg"
 				>
 					<div className="text-sm font-medium leading-snug">{selected.node.name}</div>
 					<div className="mt-1 text-xs leading-relaxed text-muted-foreground">{selected.node.statement}</div>
@@ -1689,7 +1689,7 @@ export function GraphView({
 			    and owns its selection.
 			    LAST CHILD OF THE ROOT, DELIBERATELY (owner, 2026-09-29
 			    night): app-region subtraction resolves by DOM order, not
-			    z-index — mounted earlier, the chrome's lh-no-drag column
+			    z-index — mounted earlier, the chrome's myso-no-drag column
 			    punched dead zones through the overlay's TopBar drag band
 			    (over the counts, around the search field). A full-bleed
 			    surface covering a drag band must paint AFTER everything it

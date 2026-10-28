@@ -180,7 +180,8 @@ async function connectBrowserService(): Promise<import("puppeteer-core").Browser
 			path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..", ".."),
 			"--browser-service",
 		];
-		const proc = spawn(binary, appArgs, {
+		// The executable is Electron, resolved at runtime. It is not a project file.
+		const proc = spawn(/*turbopackIgnore: true*/ binary, appArgs, {
 			// Cast: the sanitizer is pure over a loose record; NODE_ENV is
 			// always present in a real process.env.
 			env: browserServiceSpawnEnv(process.env) as NodeJS.ProcessEnv,

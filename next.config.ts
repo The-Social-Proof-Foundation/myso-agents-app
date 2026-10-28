@@ -1,6 +1,24 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
+const projectDir = path.dirname(fileURLToPath(import.meta.url));
+
 const nextConfig: NextConfig = {
+    transpilePackages: ["@socialproof/myso-messaging-stack"],
+    // pnpm link: points at the sibling messaging SDK, outside this app's
+    // lockfile root. Turbopack refuses that symlink unless the target tree
+    // (package + its ts-sdks virtual store) is an additional root.
+    experimental: {
+        turbopackAdditionalRoots: {
+            "myso-messaging-stack": {
+                path: path.resolve(projectDir, "../myso-messaging-stack/ts-sdks"),
+            },
+        },
+    },
+    // Development request URLs include OAuth codes/state. Do not forward those
+    // URLs or Server Function arguments into terminal/desktop log files.
+    logging: false,
 	// Desktop target (Electron wrapper, 2026-09-17): standalone output = a
 	// self-contained .next/standalone/server.js the Electron shell spawns
 	// on 127.0.0.1. Harmless for plain web deploys (extra build output).
@@ -73,6 +91,8 @@ const nextConfig: NextConfig = {
 			// Wave E stage 2: resvg rasterizes visual-maker SVGs natively; same
 			// per-platform-binary story as the canvas above (one per build).
 			"node_modules/@resvg/resvg-js-*/**/*",
+			"src/agent/system-prompt.md",
+			"src/agent/prompts/**/*.md",
 			"node_modules/@earendil-works/pi-ai/dist/providers/data/**/*",
 			"node_modules/@earendil-works/pi-agent-core/dist/**/*.json",
 			// Next 16.3.2 native Turbopack applies unanchored excludes while

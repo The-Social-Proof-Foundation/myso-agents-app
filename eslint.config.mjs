@@ -50,7 +50,7 @@ export default defineConfig([
 						{
 							target: "./app",
 							from: "./src",
-							except: ["./core/index.ts", "./server/index.ts"],
+							except: ["./core/index.ts", "./server/index.ts", "./server/myso.ts"],
 							message:
 								"app/ (transport + server components) imports ONLY the barrels: `@/src/core` and `@/src/server` (architecture: docs/architecture.md).",
 						},

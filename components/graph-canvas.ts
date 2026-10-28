@@ -83,6 +83,9 @@ export interface CanvasNode {
 	x: number;
 	y: number;
 	label: string;
+	/** Optional per-node disc color (#rrggbb, resolved by the caller).
+	 *  Absent = colors.node, the single-color teaching graph look. */
+	fill?: string;
 }
 
 /** One directed edge of the DERIVED view (chains-primary, 2026-09-30):
@@ -286,6 +289,7 @@ export const LABELS_FADE_RATIO = 0.5;
 
 const GLOW_SCALE = 1.7; // halo outer radius = node radius x this (proportional, like blurring a copy of the disc)
 const GLOW_ALPHA = 0.3; // halo opacity at the disc edge, fading outward
+const DIM_ALPHA = 0.22; // non-highlighted nodes/edges/labels under setHighlight
 const HOVER_FADE_MS = 180; // hover halo opacity fade length
 const ZOOM_EASE_MS = 45; // wheel-zoom glide: exponential-ease time constant (~250ms per notch)
 
@@ -584,6 +588,10 @@ export class GraphCanvasRenderer {
 	private nodeById = new Map<string, CanvasNode>();
 	private settings: GraphRenderSettings | null = null;
 	private visible: ReadonlySet<string> | null = null;
+	/** Search emphasis: when set, members draw at full strength and every
+	 *  other node draws faded at DIM_ALPHA — still drawn, still pickable
+	 *  (unlike `visible`, which removes non-members entirely). */
+	private highlight: ReadonlySet<string> | null = null;
 
 	// ── Live physics ──
 	// One d3-force sim shared with the server settle (createGraphSimulation
@@ -637,8 +645,13 @@ export class GraphCanvasRenderer {
 	private geoVersion = 0; // bump = geometry inputs changed
 	private builtVersion = -1; // version the cache was built at
 	private nodesPath: Path2D | null = null;
+	/** Node discs grouped by fill + emphasis: one fill() per group. */
+	private nodeLayers: { color: string; dim: boolean; path: Path2D }[] = [];
 	private shaftsPath: Path2D = new Path2D();
 	private headsPath: Path2D = new Path2D();
+	/** Edges touching a non-highlighted node (empty without a highlight). */
+	private dimShaftsPath: Path2D = new Path2D();
+	private dimHeadsPath: Path2D = new Path2D();
 	private regionCanvas: HTMLCanvasElement | null = null;
 	/** World rect the bitmap covers (drawImage target coords). */
 	private regionRect: { minX: number; minY: number; w: number; h: number } | null = null;
@@ -863,6 +876,24 @@ export class GraphCanvasRenderer {
 	setVisible(visible: ReadonlySet<string> | null): void {
 		this.visible = visible;
 		this.geoVersion++; // member visibility changes hulls + paths
+		this.markDirty();
+	}
+
+	/** Emphasize members, fade the rest (null = no emphasis). Faded nodes
+	 *  stay drawn and pickable. */
+	setHighlight(highlight: ReadonlySet<string> | null): void {
+		this.highlight = highlight;
+		this.geoVersion++; // node/edge layers split by emphasis
+		this.markDirty();
+	}
+
+	/** Re-anneal from the current positions: setData leaves the graph at
+	 *  rest, so callers that seed rough positions call this to let the
+	 *  live sim settle them. */
+	reheat(): void {
+		if (!this.sim) return;
+		this.sim.alpha(1);
+		this.simActive = true;
 		this.markDirty();
 	}
 
@@ -1238,13 +1269,30 @@ export class GraphCanvasRenderer {
 
 		// Node discs: one Path2D, one fill() per frame. Implication nodes
 		// are pure geometry — never a disc, never a label, never picked.
+		// Per-node fills and the highlight split the discs into layers
+		// (one fill() per color+emphasis group); without either, a single
+		// default layer draws exactly as before.
+		const highlight = this.highlight;
+		const isDim = (id: string) => !!highlight && !highlight.has(id);
 		const nodesPath = new Path2D();
+		const layers = new Map<string, { color: string; dim: boolean; path: Path2D }>();
 		for (const n of data.nodes) {
 			if (!isVisible(n.id) || isImpNodeId(n.id)) continue;
 			nodesPath.moveTo(n.x + nodeR, n.y);
 			nodesPath.arc(n.x, n.y, nodeR, 0, Math.PI * 2);
+			const color = n.fill ?? data.colors.node;
+			const dim = isDim(n.id);
+			const key = `${color}|${dim ? 1 : 0}`;
+			let layer = layers.get(key);
+			if (!layer) {
+				layer = { color, dim, path: new Path2D() };
+				layers.set(key, layer);
+			}
+			layer.path.moveTo(n.x + nodeR, n.y);
+			layer.path.arc(n.x, n.y, nodeR, 0, Math.PI * 2);
 		}
 		this.nodesPath = nodesPath;
+		this.nodeLayers = [...layers.values()];
 
 		// Edge shafts + arrowheads (rendering arc, owner 2026-09-30): all
 		// arrows are PLAIN single shafts — the old double-shaft glyph is
@@ -1255,13 +1303,18 @@ export class GraphCanvasRenderer {
 		// edge. Single-premise arguments arrive here as ordinary
 		// proposition→proposition edges and draw exactly like any arrow.
 		const arrowLen = settings.arrowLength;
-		const shafts = new Path2D();
-		const heads = new Path2D();
+		const fullShafts = new Path2D();
+		const fullHeads = new Path2D();
+		const dimShafts = new Path2D();
+		const dimHeads = new Path2D();
 		for (const e of data.edges) {
 			if (!isVisible(e.from) || !isVisible(e.to)) continue;
 			const a = this.nodeById.get(e.from);
 			const b = this.nodeById.get(e.to);
 			if (!a || !b) continue;
+			const faded = isDim(e.from) || isDim(e.to);
+			const shafts = faded ? dimShafts : fullShafts;
+			const heads = faded ? dimHeads : fullHeads;
 			const intoImp = isImpNodeId(e.to);
 			const outOfImp = isImpNodeId(e.from);
 			const g = arrowGeometry(a, b, outOfImp ? 0 : nodeR, intoImp ? 0 : nodeR, arrowLen);
@@ -1279,8 +1332,10 @@ export class GraphCanvasRenderer {
 				heads.closePath();
 			}
 		}
-		this.shaftsPath = shafts;
-		this.headsPath = heads;
+		this.shaftsPath = fullShafts;
+		this.headsPath = fullHeads;
+		this.dimShaftsPath = dimShafts;
+		this.dimHeadsPath = dimHeads;
 
 		// Cluster regions are NOT built here: they rasterize into their own
 		// low-res bitmap (see buildRegions), on their own rebuild schedule
@@ -1659,21 +1714,33 @@ export class GraphCanvasRenderer {
 			ctx.lineCap = "round";
 			ctx.stroke(this.shaftsPath);
 			ctx.fill(this.headsPath);
+			if (this.highlight) {
+				ctx.save();
+				ctx.globalAlpha = DIM_ALPHA;
+				ctx.stroke(this.dimShaftsPath);
+				ctx.fill(this.dimHeadsPath);
+				ctx.restore();
+			}
 		}
 
-		// 4. Nodes: one cached Path2D, one fill.
-		ctx.fillStyle = data.colors.node;
-		ctx.fill(this.nodesPath);
+		// 4. Nodes: one cached Path2D per fill/emphasis layer.
+		for (const layer of this.nodeLayers) {
+			ctx.save();
+			if (layer.dim) ctx.globalAlpha = DIM_ALPHA;
+			ctx.fillStyle = layer.color;
+			ctx.fill(layer.path);
+			ctx.restore();
+		}
 
 		// 6. Node labels — one global gate, faded together. World-scaled
 		// with the graph (they grow as you zoom in, Obsidian-style).
 		if (nodeAlpha > 0.01) {
 			ctx.save();
-			ctx.globalAlpha = nodeAlpha;
 			ctx.font = this.worldLabelFont;
 			for (const [id, lines] of this.labelLines) {
 				const n = this.nodeById.get(id);
 				if (!n) continue;
+				ctx.globalAlpha = this.highlight && !this.highlight.has(id) ? nodeAlpha * DIM_ALPHA : nodeAlpha;
 				drawNameLines(ctx, n.x, n.y, lines, this.world, data.colors.label);
 			}
 			ctx.restore();
@@ -1689,8 +1756,9 @@ export class GraphCanvasRenderer {
 				: this.hoverNode;
 			if (n) {
 				const glow = ctx.createRadialGradient(n.x, n.y, nodeR, n.x, n.y, glowOuter);
-				glow.addColorStop(0, rgbaFromHex(data.colors.node, GLOW_ALPHA * this.hoverFade));
-				glow.addColorStop(1, rgbaFromHex(data.colors.node, 0));
+				const glowColor = n.fill ?? data.colors.node;
+				glow.addColorStop(0, rgbaFromHex(glowColor, GLOW_ALPHA * this.hoverFade));
+				glow.addColorStop(1, rgbaFromHex(glowColor, 0));
 				ctx.fillStyle = glow;
 				ctx.beginPath();
 				ctx.arc(n.x, n.y, glowOuter, 0, Math.PI * 2);

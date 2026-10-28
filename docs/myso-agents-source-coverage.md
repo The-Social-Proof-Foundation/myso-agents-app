@@ -1,6 +1,6 @@
 # MySo Agents source coverage baseline
 
-October 24, 2026. Planning evidence only. Source was read; no product code, test or runtime was executed. Plan approval is still pending.
+October 24, 2026. Planning evidence only. Source was read; no product code, test or runtime was executed. This is a historical planning baseline; owner-approved implementation is in progress. The current registry has since removed profile tipping and must be read from `myso-agents-current-action-coverage.md`.
 
 ## Findings
 
@@ -87,7 +87,7 @@ Two independent inventories must be reconciled: the production catalog and the e
 | `jury.sweep_vote_refunds.v1` | enabled | jurySweepVoteRefunds | absent | add dedicated MCP callable exposure and auth/scope mapping |
 | `jury.refresh_roster_entry.v1` | enabled | juryRefreshRoster | absent | add dedicated MCP callable exposure and auth/scope mapping |
 | `jury.evict_ineligible.v1` | enabled | juryEvict | absent | add dedicated MCP callable exposure and auth/scope mapping |
-| `payments.tip_profile.v1` | transaction-builder-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
+| `payments.tip_profile.v1` | excluded by current owner decision | absent | absent | Not part of the production catalog or implementation scope. Tipping is post-only (`payments.tip_post.v1`). |
 | `payments.tip_post.v1` | transaction-builder-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
 | `payments.send_token.v1` | protocol-adapter-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
 | `subscription.subscribe_to_plan.v1` | transaction-builder-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
@@ -106,7 +106,7 @@ Two independent inventories must be reconciled: the production catalog and the e
 | `spot.claim_payout.v1` | transaction-builder-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
 | `storage.purchase_capacity.v1` | protocol-adapter-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
 | `dex.swap.v1` | protocol-adapter-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
-| `bridge.initiate_transfer.v1` | protocol-adapter-required | absent | absent | implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP |
+| `bridge.initiate_transfer.v1` | deferred by owner | absent | absent | Do not add bridge MCP in this implementation. Keep the action unavailable unless the owner reopens its scope. |
 | `organization.create.v1` | enabled | createOrganization | organization_create | existing direct exposure; audit actual deployed scope and end-to-end contract |
 | `organization.update_metadata.v1` | enabled | updateOrganizationMetadata | organization_update_metadata | existing direct exposure; audit actual deployed scope and end-to-end contract |
 | `organization.update_category.v1` | enabled | updateOrganizationCategory | organization_update_category | existing direct exposure; audit actual deployed scope and end-to-end contract |

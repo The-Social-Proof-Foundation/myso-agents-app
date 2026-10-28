@@ -80,14 +80,14 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 			if (attempt.backgroundDirty && next.allowBackgroundUse !== attempt.background) {
 				operation.current = "change";
 				const request = ++statusSequence.current;
-				const result: unknown = await window.lh!.chatgpt!.consent(attempt.background);
+				const result: unknown = await window.mysoAgents!.chatgpt!.consent(attempt.background);
 				if (!owns(attempt)) return;
 				if (!isStatus(result)) { setError(replyError(result)); finish(attempt); return; }
 				replyFailure = result.error;
 				let saved: ChatGPTStatus | null;
 				if (request !== statusSequence.current) {
 					const refresh = ++statusSequence.current;
-					const value: unknown = await window.lh!.chatgpt!.status();
+					const value: unknown = await window.mysoAgents!.chatgpt!.status();
 					if (!owns(attempt)) return;
 					saved = refresh === statusSequence.current ? publishStatus(value) : statusRef.current;
 				} else saved = publishStatus(result);
@@ -121,7 +121,7 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 	};
 	useEffect(() => {
 		mounted.current = true;
-		const bridge = window.lh?.chatgpt;
+		const bridge = window.mysoAgents?.chatgpt;
 		const refresh = async () => {
 			const request = ++statusSequence.current;
 			try {
@@ -162,13 +162,13 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 			// Keep cancellation serialized even after login's pending IPC reply.
 			operation.current = "cancel"; setBusy(true);
 			const request = ++statusSequence.current;
-			void window.lh?.chatgpt?.cancel().then(async (value: unknown) => {
+			void window.mysoAgents?.chatgpt?.cancel().then(async (value: unknown) => {
 				if (!mounted.current || generation.current !== intent) return;
 				if (!isStatus(value)) { setError(replyError(value)); return; }
 				let next: ChatGPTStatus | null;
 				if (request !== statusSequence.current) {
 					const refresh = ++statusSequence.current;
-					const current: unknown = await window.lh!.chatgpt!.status();
+					const current: unknown = await window.mysoAgents!.chatgpt!.status();
 					if (!mounted.current || generation.current !== intent) return;
 					next = refresh === statusSequence.current ? publishStatus(current) : statusRef.current;
 				} else next = publishStatus(value);
@@ -196,7 +196,7 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 			let next: ChatGPTStatus | null;
 			if (request !== statusSequence.current) {
 				const refresh = ++statusSequence.current;
-				const current: unknown = await window.lh!.chatgpt!.status();
+				const current: unknown = await window.mysoAgents!.chatgpt!.status();
 				if (!mounted.current || intent !== generation.current) return;
 				next = refresh === statusSequence.current ? publishStatus(current) : statusRef.current;
 			} else next = publishStatus(value);
@@ -215,7 +215,7 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 		finally { if (intent === generation.current) { operation.current = null; if (mounted.current) setBusy(false); } }
 	}
 	async function login() {
-		const bridge = window.lh?.chatgpt;
+		const bridge = window.mysoAgents?.chatgpt;
 		const owner = dialogRef.current;
 		if (!bridge || operation.current || !status.available || status.pending || owner?.kind !== "connect") return;
 		const attempt: LoginAttempt = { generation: ++generation.current, dialog: owner, registration, background, backgroundDirty, pending: false, phase: "starting" };
@@ -242,7 +242,7 @@ export function ChatGPTUIProvider({ children }: { children: React.ReactNode }) {
 		// No finally: pending OAuth outlives this IPC promise. Only its status
 		// completion, failure, or explicit cancellation releases the attempt.
 	}
-	const bridge = typeof window !== "undefined" ? window.lh?.chatgpt : undefined;
+	const bridge = typeof window !== "undefined" ? window.mysoAgents?.chatgpt : undefined;
 	const context = {
 		status, busy, error: warning ? null : visibleError, inlineError: dialog || warning ? null : visibleError, warning: dialog?.kind === "warning" ? null : warning,
 		connect: openConnect,

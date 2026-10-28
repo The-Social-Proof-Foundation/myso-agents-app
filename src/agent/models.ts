@@ -11,17 +11,12 @@ import { builtinProviders } from "@earendil-works/pi-ai/providers/all";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { type ModelRole } from "../../config.ts";
 import { DEFAULT_THINKING_ORDER } from "../core/settings.ts";
-import packageMetadata from "../../package.json" with { type: "json" };
+import { APP_IDENTITY } from "./identity.ts";
+export { APP_IDENTITY } from "./identity.ts";
 import { chatGPTModel } from "./chatgpt-bridge.ts";
 import { chatGPTStream } from "./chatgpt-stream.ts";
 import type { ChatGPTDispatchLifecycle } from "./chatgpt-request-cycle.ts";
 
-/** App identity is immutable and shared by Models and every native Agent.
- * Agent's default Pi attribution otherwise overrides the Models identity. */
-export const APP_IDENTITY = Object.freeze({
-	userAgent: Object.freeze({ custom: `myso-agents/${packageMetadata.version}` }),
-	attribution: Object.freeze({ name: "MySo Agents" }),
-});
 
 /**
  * The one engine factory every agent's model comes from (the pi-ai swap,

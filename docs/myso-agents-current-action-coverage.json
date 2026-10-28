@@ -1,0 +1,2940 @@
+{
+  "date": "2026-10-28",
+  "status": "in_progress_source_and_compile_only",
+  "summary": {
+    "catalogActions": 114,
+    "dedicatedToolsInSource": 116,
+    "blockedBuildersOrAdapters": 1,
+    "newGeneratedTaskJuryTools": 41,
+    "generatedCapabilityActionTools": 44,
+    "newOwnerAccessTools": 2,
+    "newSubscriptionOwnerTools": 6,
+    "newOwnerPaymentTools": 1,
+    "newOwnerAgentManagementTools": 5,
+    "newOwnerTipTools": 1,
+    "newOwnerCreatorVaultTools": 1,
+    "newOwnerSpotPayoutTools": 1,
+    "newOwnerSpotBetTools": 1,
+    "newOwnerSpotMarketTools": 1,
+    "newOwnerGovernanceTools": 1,
+    "newOwnerBeneficiaryTransferAcceptanceTools": 1,
+    "newBeneficiaryTransferMcpWorkflowTools": 5,
+    "newOwnerOrganizationTreasuryTools": 3,
+    "newOwnerPlatformAdminTools": 2,
+    "newOwnerRotationTools": 4,
+    "hostedMcpActionExecution": "source-implemented, deployment-unverified: task_worker and juror remain restricted to their respective action families. New action_worker delegates store an explicit allowlist of 1\u201316 enabled tier-1 agent-capability actions. Hosted MCP discovery now lists only action tools with a matching account/agent delegate class and stored action ID; invocation selects that same delegate and the sidecar validates its active chain context and exact required capability. The on-chain per-action MYSO cap remains authoritative. Owner-wallet and owner-co-sign actions are excluded from unattended action_worker execution. Hosted MCP falls back to an exact approval request only when the chain bridge returns approval_required, and exposes request, wallet-signed approval, prepare and owner-signature submit tools through internal Memory routes that reuse registered-action policy and live-chain validation; a human must supply both wallet signatures. The public approval handler reconstructs the stored account/agent from fullnode state. An Agents-screen owner approval inbox is implemented for web and desktop; owners can inspect exact action parameters, sign the intent, review and sign the prepared wallet transaction, submit it, and check its action-specific finalized receipt. Deployment, migration and owner wallet verification remain open. App, sidecar, MCP and Rust compile/type checks pass; no tests or services were run."
+  },
+  "actions": [
+    {
+      "actionId": "access.publish_mydata_graph.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "publishMyDataGraph",
+      "dedicatedToolName": "mydata_publish_graph",
+      "dedicatedToolOAuthScope": "mydata:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 170
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 832
+      },
+      "workRemaining": "Seller-signed typed graph publication, public graph-offer discovery, live quote/signature verification, immutable version pinning, Knowledge-screen search/item reads, and current-page owner grant/revoke are source-implemented. Purchase history is recoverable by owner/agent and checked against exact fullnode receipts; owner grant/revoke history is recovered from the account/agent journal and checked against chain events, with wallet-operation resume metadata persisted locally. Configure MyData encryption and registry deployment, then verify seller authority, transaction finality, idempotent publication and public indexer discovery on the owner deployment. Series-wide access is intentionally unsupported by the selected immutable-purchase model.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "publication_source_deployment_unverified"
+    },
+    {
+      "actionId": "access.purchase_mydata_access.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "purchaseMyDataAccess",
+      "dedicatedToolName": "access_purchase_mydata_access",
+      "dedicatedToolOAuthScope": "mydata:purchase",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 22
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1252
+      },
+      "workRemaining": "Deploy the compiled bounded Move entry and matching key-server policy, configure MYDATA_CONFIG_ID / ECOSYSTEM_TREASURY_ID, opt in MYDATA_BOUNDED_PURCHASE_ENABLED, then verify agent-funded purchases for both agent and organization audiences, exact sender-owned MYSO coins, live on-chain max_action_spend boundaries, idempotent retries, quote changes, owner-funded agent grants, revocation, and receipts. Automatic execution is governed by live on-chain capability/approval policy and per-action limits; there is no seller allowlist or app-side spend policy. Organization audiences are funded by the acting agent because core has no org MYSO treasury cap. Current-page graph offers, purchase, immutable-version history, decrypt/search, persisted owner grant/revoke history and wallet-operation recovery, revocation invalidation, and explicit interactive/unattended inference consent are implemented in source. Remaining privacy work is model-provider retention and downstream derived-data controls beyond the app work transcript.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "bounded_purchase_source_deployment_gated",
+      "deploymentDefault": "disabled",
+      "registryVersion": "1.6.0",
+      "moveSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-core/crates/myso-framework/packages/myso-social/sources/mydata.move",
+        "line": 2038
+      }
+    },
+    {
+      "actionId": "access.purchase_post_access.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "purchasePostAccess",
+      "dedicatedToolName": "access_purchase_post_access",
+      "dedicatedToolOAuthScope": "mydata:purchase",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 24
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 831
+      },
+      "workRemaining": "Deploy the post::purchase_post_access_bounded_with_platform entry and configure MYDATA_POST_ACCESS_PURCHASE_ENABLED. Then owner-run capability/budget policy, exact-post binding, quote-change, coin, replay and same-transaction receipt checks.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "capability_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/mydata.ts",
+        "line": 52
+      },
+      "registryVersion": "1.20.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/mydata.ts",
+        "line": 52
+      }
+    },
+    {
+      "actionId": "access.revoke_mydata_share.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "revokeMyDataShare",
+      "dedicatedToolName": "access_revoke_mydata_share",
+      "dedicatedToolOAuthScope": "mydata:share",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 98
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1254
+      },
+      "workRemaining": "Owner-run grant/revoke approval, signer/seller mismatch, replay and scoped receipt checks; the purchase/grant/revoke UI is limited to the current page flow, while persisted entitlement history and cache/derived-data invalidation remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified",
+      "registryVersion": "1.7.0"
+    },
+    {
+      "actionId": "access.share_mydata.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "shareMyData",
+      "dedicatedToolName": "access_share_mydata",
+      "dedicatedToolOAuthScope": "mydata:share",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 97
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1253
+      },
+      "workRemaining": "Owner-run grant/revoke approval, signer/seller mismatch, replay and scoped receipt checks; the purchase/grant/revoke UI is limited to the current page flow, while persisted entitlement history and cache/derived-data invalidation remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified",
+      "registryVersion": "1.7.0"
+    },
+    {
+      "actionId": "account.rotate_owner_key.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "rotateOwnerKey",
+      "dedicatedToolName": "account_admin_propose_owner_rotation, account_admin_accept_owner_rotation_batch, account_admin_rollback_owner_rotation_batch, account_admin_cancel_owner_rotation",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 124
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 906
+      },
+      "workRemaining": "Dedicated stage-specific MCP approval requests now cover proposal, recipient acceptance batches, either-party rollback batches, and original-owner cancellation. The approval routes still require the correct old/new owner wallet signature and recheck live manifest/progress. Independently transferable objects remain a separate explicit wallet-selected assets.transfer_object.v1 action. Deployment/runtime verification remains open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_phase_tools_source_compile_only",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/tools.ts",
+        "line": 343
+      }
+    },
+    {
+      "actionId": "agent.deactivate_child.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "deactivateManagedAgent",
+      "dedicatedToolName": "agent_deactivate_child",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 43
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1285
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "agent.grant_capability.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ownerGrantCapability",
+      "dedicatedToolName": "agent_admin_request_grant_capability",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 121
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1242
+      },
+      "workRemaining": "Enable OWNER_AGENT_ACTIONS_ENABLED only after matching package/configuration; owner-run wallet-signature, stale policy, revocation ancestry/session-expiry, self-revocation receipt and capability/budget-boundary checks remain required. Named MCP requests create approval intents only; owner signature and exact native policy checks remain mandatory.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_agent_management_source_deployment_gated",
+      "registryVersion": "1.10.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/owner-agents.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "agent.raise_spending_limit.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ownerRaiseLimit",
+      "dedicatedToolName": "agent_admin_request_raise_spending_limit",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 123
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1244
+      },
+      "workRemaining": "Enable OWNER_AGENT_ACTIONS_ENABLED only after matching package/configuration; owner-run wallet-signature, stale policy, revocation ancestry/session-expiry, self-revocation receipt and capability/budget-boundary checks remain required. Named MCP requests create approval intents only; owner signature and exact native policy checks remain mandatory.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_agent_management_source_deployment_gated",
+      "registryVersion": "1.10.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/owner-agents.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "agent.lower_spending_limit.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ownerLowerLimit",
+      "dedicatedToolName": "agent_admin_request_lower_spending_limit",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 125
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 907
+      },
+      "workRemaining": "OWNER_AGENT_ACTIONS_ENABLED remains deployment-gated until the matching package/configuration is deployed. The native action accepts the exact current cap, including unlimited, and a strictly lower finite cap; owner-wallet approval and exact event receipt are required. Runtime and deployment validation remain open.",
+      "verification": "move_build_and_source_compile_only",
+      "implementationStatus": "owner_approval_agent_management_source_deployment_gated",
+      "registryVersion": "1.10.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/owner-agents.ts",
+        "line": 41
+      }
+    },
+    {
+      "actionId": "agent.register_agent.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "registerRootAgent",
+      "dedicatedToolName": "agent_register_root",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 119
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1282
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "agent.register_child.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "registerChildAgent",
+      "dedicatedToolName": "agent_register_child",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 41
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1283
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "agent.revoke_agent.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ownerRevokeAgent",
+      "dedicatedToolName": "agent_admin_request_revoke",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 120
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1241
+      },
+      "workRemaining": "Enable OWNER_AGENT_ACTIONS_ENABLED only after matching package/configuration; owner-run wallet-signature, stale policy, revocation ancestry/session-expiry, self-revocation receipt and capability/budget-boundary checks remain required. Named MCP requests create approval intents only; owner signature and exact native policy checks remain mandatory.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_agent_management_source_deployment_gated",
+      "registryVersion": "1.10.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/owner-agents.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "agent.revoke_capability.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ownerRevokeCapability",
+      "dedicatedToolName": "agent_admin_request_revoke_capability",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 122
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1243
+      },
+      "workRemaining": "Enable OWNER_AGENT_ACTIONS_ENABLED only after matching package/configuration; owner-run wallet-signature, stale policy, revocation ancestry/session-expiry, self-revocation receipt and capability/budget-boundary checks remain required. Named MCP requests create approval intents only; owner signature and exact native policy checks remain mandatory.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_agent_management_source_deployment_gated",
+      "registryVersion": "1.10.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/owner-agents.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "agent.revoke_child.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "revokeManagedAgent",
+      "dedicatedToolName": "agent_revoke_child",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 44
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1286
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "agent.update_child.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "updateManagedAgent",
+      "dedicatedToolName": "agent_update_child",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 42
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1284
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "assets.burn_object.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "burnZeroCoin",
+      "dedicatedToolName": "assets_burn_object",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 131
+      },
+      "registrySource": null,
+      "workRemaining": "Only directly owner-held zero-balance framework Coin<T> objects are burnable. The fixed builder, live owner/balance checks and scoped object-deletion receipt are implemented; verify deployment and owner approval.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified"
+    },
+    {
+      "actionId": "assets.transfer_object.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "transferOwnedObject",
+      "dedicatedToolName": "assets_transfer_object",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 130
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 797
+      },
+      "workRemaining": "The fixed framework transfer, direct owner/type/version preflight, exact owner approval, and scoped finalized object-change receipt are implemented. Verify owner approval, direct-owned objects, and historical object-change evidence on the owner deployment. Shared, immutable and object-owned objects are intentionally rejected.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "implemented_source_deployment_unverified"
+    },
+    {
+      "actionId": "bridge.initiate_transfer.v1",
+      "tier": "2",
+      "catalogAvailability": "protocol-adapter-required",
+      "registryDescriptor": null,
+      "dedicatedToolName": null,
+      "dedicatedToolOAuthScope": "payments:write",
+      "customToolSource": "packages/mcp/src/platform-tools.ts",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 106
+      },
+      "registrySource": null,
+      "workRemaining": "Owner-deferred: do not add bridge MCP in this implementation. Keep the action unavailable unless the owner reopens its scope.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "blocked_builder_or_adapter"
+    },
+    {
+      "actionId": "dex.swap.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "dexSwap",
+      "dedicatedToolName": "dex_swap",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 103
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 805
+      },
+      "workRemaining": "Owner runtime verification of configured package identity, exact minimum-output behavior, checkpoint/event compatibility and deployed policy.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_compiled_runtime_unverified"
+    },
+    {
+      "actionId": "governance.delegate_vote.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "governanceDelegateVote",
+      "dedicatedToolName": "governance_delegate_vote",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 129
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 798
+      },
+      "workRemaining": "Registry 1.19.0 adds separate fixed ecosystem and platform builders, exact owner approval, a native ecosystem/creator-registry route guard, and scoped DelegateVoteEvent receipt. Owner-run signer eligibility, route, rejection treasury, event and checkpoint verification remain.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled",
+      "registryVersion": "1.19.0"
+    },
+    {
+      "actionId": "governance.vote.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "governanceVote",
+      "dedicatedToolName": "governance_vote",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 128
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 796
+      },
+      "workRemaining": "The exact-input owner approval, fixed builder, current object-state quadratic-cost quote and scoped event receipt are implemented. Native code still rechecks proposal membership, phase, time, voter eligibility, vote limits and payment; quote results are snapshots, not execution guarantees. Verify the owner approval and event behavior on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "implemented_source_deployment_unverified"
+    },
+    {
+      "actionId": "jury.accept.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryAccept",
+      "dedicatedToolName": "jury_accept",
+      "dedicatedToolOAuthScope": "jury:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 67
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1311
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.apply_proposal_decision.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryApplyDecision",
+      "dedicatedToolName": "jury_apply_proposal_decision",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 81
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1325
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.claim_fee.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryClaimFee",
+      "dedicatedToolName": "jury_claim_fee",
+      "dedicatedToolOAuthScope": "jury:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 70
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1314
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.commit_vote.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryCommitVote",
+      "dedicatedToolName": "jury_commit_vote",
+      "dedicatedToolOAuthScope": "jury:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 68
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1312
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.escalate_proposal.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryEscalateProposal",
+      "dedicatedToolName": "jury_escalate_proposal",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 79
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1323
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.evict_ineligible.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryEvict",
+      "dedicatedToolName": "jury_evict_ineligible",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 85
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1329
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.execute_neutral_resolution.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryExecuteNeutral",
+      "dedicatedToolName": "jury_execute_neutral_resolution",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 77
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1321
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.execute_task_verdict.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryExecuteTaskVerdict",
+      "dedicatedToolName": "jury_execute_task_verdict",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 75
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1319
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.finalize_case.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryFinalizeCase",
+      "dedicatedToolName": "jury_finalize_case",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 74
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1318
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.finalize_proposal.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryFinalizeProposal",
+      "dedicatedToolName": "jury_finalize_proposal",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 80
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1324
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.finalize_round.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryFinalizeRound",
+      "dedicatedToolName": "jury_finalize_round",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 73
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1317
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.refresh_roster_entry.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryRefreshRoster",
+      "dedicatedToolName": "jury_refresh_roster_entry",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 84
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1328
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.replace_no_shows.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryReplaceNoShows",
+      "dedicatedToolName": "jury_replace_no_shows",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 72
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1316
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.reveal_vote.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryRevealVote",
+      "dedicatedToolName": "jury_reveal_vote",
+      "dedicatedToolOAuthScope": "jury:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 69
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1313
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.select_jury.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "jurySelect",
+      "dedicatedToolName": "jury_select_jury",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 71
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1315
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.settle_dispute_fees.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "jurySettleFees",
+      "dedicatedToolName": "jury_settle_dispute_fees",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 78
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1322
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.start_neutral_resolution.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "juryStartNeutral",
+      "dedicatedToolName": "jury_start_neutral_resolution",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 76
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1320
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.sweep_case.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "jurySweepCase",
+      "dedicatedToolName": "jury_sweep_case",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 82
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1326
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "jury.sweep_vote_refunds.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "jurySweepVoteRefunds",
+      "dedicatedToolName": "jury_sweep_vote_refunds",
+      "dedicatedToolOAuthScope": "jury:operate",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 83
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1327
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "messaging.bind_room_to_task.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "bindAgentRoomToTask",
+      "dedicatedToolName": "messaging_bind_room_to_task",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 41
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 497
+      },
+      "workRemaining": "Deploy the updated messaging package and indexer; owner-run task-party, room-reader permission, idempotent replay, conflicting-bind rejection and finalized event-link checks.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/tools.ts",
+        "line": 529
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "messaging.create_group.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createMessagingGroup",
+      "dedicatedToolName": "messaging_create_group",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 38
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1270
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "messaging.send_message.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "sendMessage",
+      "dedicatedToolName": "messaging_send_message",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 37
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1269
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.accept_invitation.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "acceptOrganizationInvitation",
+      "dedicatedToolName": "organization_accept_invitation",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 39
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1280
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.assign_role.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "assignOrganizationRole",
+      "dedicatedToolName": "organization_assign_role",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 116
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1277
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.create.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createOrganization",
+      "dedicatedToolName": "organization_create",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 110
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1271
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.create_invitation.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createOrganizationInvitation",
+      "dedicatedToolName": "organization_create_invitation",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 118
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1279
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.deactivate.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "deactivateOrganization",
+      "dedicatedToolName": "organization_deactivate",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 113
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1274
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.decline_invitation.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "declineOrganizationInvitation",
+      "dedicatedToolName": "organization_decline_invitation",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 40
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1281
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.define_role.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "defineOrganizationRole",
+      "dedicatedToolName": "organization_define_role",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 115
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1276
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.ensure_memory_group.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "ensureOrganizationMemoryGroup",
+      "dedicatedToolName": "organization_ensure_memory_group",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 114
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1275
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.fund_treasury.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "fundOrganizationTreasury",
+      "dedicatedToolName": "organization_fund_treasury",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 140
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 620
+      },
+      "workRemaining": "Native typed deposit, directly-owned coin/balance validation, SDK/PTB, owner approval, event receipt and app flow are source-implemented and compile-checked. Deployment and runtime checks remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "organization.grant_treasury_access.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "grantOrganizationTreasuryAccess",
+      "dedicatedToolName": "organization_grant_treasury_access",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 134
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 587
+      },
+      "workRemaining": "Native Move, SDK/PTB, catalog/registry, authenticated server policy and exact event receipt are source-implemented and compile-checked. The app provides the owner-wallet approval, signing and receipt flow; contract role support includes an org group administrator, but the current server approval UI is owner-wallet only. Deployment and runtime checks remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "organization.revoke_role.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "revokeOrganizationRole",
+      "dedicatedToolName": "organization_revoke_role",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 117
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1278
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.update_category.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "updateOrganizationCategory",
+      "dedicatedToolName": "organization_update_category",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 112
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1273
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.update_metadata.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "updateOrganizationMetadata",
+      "dedicatedToolName": "organization_update_metadata",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 111
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1272
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "organization.withdraw_treasury.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "withdrawOrganizationTreasury",
+      "dedicatedToolName": "organization_withdraw_treasury",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 135
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 603
+      },
+      "workRemaining": "Native typed treasury, live balance validation, SDK/PTB, owner approval, exact recipient/amount/coin event receipt and web/desktop owner-wallet flow are source-implemented and compile-checked. Admins are supported by Move only when explicitly allowlisted; server/UI signing currently authenticates the organization owner. No automatic treasury spend cap exists. Deployment and runtime checks remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "payments.send_token.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "sendToken",
+      "dedicatedToolName": "payments_send_token",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 90
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1245
+      },
+      "workRemaining": "Apply migration 018, upgrade SDK/server/sidecar/MCP together, authorize payments scopes, and explicitly enable TOKEN_TRANSFERS_ENABLED after owner-run wallet/coin/recipient/type/amount/deny-list/duplicate/pruned-history cases. No new Move entry point required. Owner wallet signature remains required; delegated allowances, tipping and owner approval UI remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_coin_transfer_source_deployment_gated",
+      "registryVersion": "1.9.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/payments.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "payments.tip_post.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "tipPost",
+      "dedicatedToolName": "payments_tip_post",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 89
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1246
+      },
+      "workRemaining": "Registry 1.11.0 is required. Owner-run tests must verify both Move ABI variants, exact coin type/amount, wrong beneficiary vault, disabled tips, self-tip/repost rejection, MemoryAccount spend limits, and stale post/vault state. The owner must approve every transaction; no automatic tip capability is claimed.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_typed_ptb_source_enabled",
+      "registryVersion": "1.11.0",
+      "deploymentDefault": "owner_wallet_approval_required",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/payments.ts",
+        "line": 36
+      }
+    },
+    {
+      "actionId": "platform.transfer_platform.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "transferPlatform",
+      "dedicatedToolName": "platform_transfer_developer",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 136
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 637
+      },
+      "workRemaining": "PlatformAdminCap-gated Move entry, SDK builder, live cap/platform checks, owner-approved MCP action and exact finalized event receipt are source-implemented. The web/desktop app now has a wallet signing flow. Deploy the upgraded package and verify the owner-held cap and receipt on the target network.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "platform.update_fee_recipient.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "updatePlatformFeeRecipient",
+      "dedicatedToolName": "platform_update_fee_recipient",
+      "dedicatedToolOAuthScope": "organization:admin",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 137
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 648
+      },
+      "workRemaining": "PlatformAdminCap-gated update of the task market ecosystem fee recipient, with a dedicated event; SDK/MCP/app approval and receipt paths are source-implemented. New offers use the new recipient and existing offers retain their snapshotted recipient. Deployment and runtime verification remain open.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "poc.accept_beneficiary_transfer.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "acceptBeneficiaryTransfer",
+      "dedicatedToolName": "poc_accept_beneficiary_transfer",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 93
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 838
+      },
+      "workRemaining": "The app exposes recipient-wallet approval, exact transaction signing, submission recovery and a scoped finalized receipt. Before requesting approval, the memory server verifies the live beneficiary type/status, unclaimed state, pending transfer field and exact authenticated recipient; Move checks the recipient again at execution. Verify the proposal, acceptance and subsequent claim lifecycle on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "implemented_source_compile_only_deployment_unverified",
+      "registryVersion": "1.28.0"
+    },
+    {
+      "actionId": "poc.claim_creator_vault.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "claimCreatorVault",
+      "dedicatedToolName": "poc_claim_creator_vault",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 128
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 794
+      },
+      "workRemaining": "Configure POC_CONFIG_ID and ECOSYSTEM_TREASURY_ID, deploy the matching PoC package, and explicitly enable POC_VAULT_CLAIMS_ENABLED. The fixed builder claims the selected coin-type balance without a referrer; server checks vault type/owner and Move rechecks beneficiary. Run owner approval, empty balance, event amount and historical receipt checks on the deployed chain.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified",
+      "registryVersion": "1.13.0"
+    },
+    {
+      "actionId": "poc.transfer_beneficiary_rights.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "verifiedIdentityOracleTransfer",
+      "dedicatedToolName": "poc_propose_beneficiary_transfer",
+      "dedicatedToolOAuthScope": null,
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 127
+      },
+      "registrySource": null,
+      "workRemaining": "The MCP OAuth start/status/propose/job and proposal receipt tools are implemented behind an explicit deployment flag, bridge secret, PoCConfig and trade capability. The receipt checks the scoped oracle job and finalized native proposal event; the web/desktop app exposes recipient acceptance through exact wallet approval/signing and a scoped receipt. Verify service-key isolation, OAuth callback binding, pending proposal replacement, live oracle authority, full acceptance and post-acceptance claim behavior on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "implemented_source_compile_only_deployment_gated"
+    },
+    {
+      "actionId": "social.block_profile.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "blockProfile",
+      "dedicatedToolName": "social_block_profile",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 35
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1267
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.create_comment.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createComment",
+      "dedicatedToolName": "social_create_comment",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 29
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1261
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.create_post.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createPost",
+      "dedicatedToolName": "social_create_post",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 27
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1259
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.create_repost.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createRepost",
+      "dedicatedToolName": "social_create_repost",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 31
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1263
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.delete_comment.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "deleteComment",
+      "dedicatedToolName": "social_delete_comment",
+      "dedicatedToolOAuthScope": "social:destructive",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 125
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 765
+      },
+      "workRemaining": "Registry 1.12.0 adds this exact-input owner approval request to production discovery. Owner-run approval/signature, parent-post binding, Move ownership guard, deletion event and receipt checks remain required.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_request_source_enabled"
+    },
+    {
+      "actionId": "social.delete_post.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "deletePost",
+      "dedicatedToolName": "social_delete_post",
+      "dedicatedToolOAuthScope": "social:destructive",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 124
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 753
+      },
+      "workRemaining": "Registry 1.12.0 adds this exact-input owner approval request to production discovery. Owner-run approval/signature, parameter binding, Move ownership guard, deletion event and receipt checks remain required.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_request_source_enabled"
+    },
+    {
+      "actionId": "social.edit_comment.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "editComment",
+      "dedicatedToolName": "social_edit_comment",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 30
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1262
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.edit_post.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "editPost",
+      "dedicatedToolName": "social_edit_post",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 28
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1260
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.follow_profile.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "followProfile",
+      "dedicatedToolName": "social_follow_profile",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 33
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1265
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.react_to_comment.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "reactToComment",
+      "dedicatedToolName": "social_react_comment",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 25
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1257
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.react_to_post.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "reactToPost",
+      "dedicatedToolName": "social_react_post",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 23
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1255
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.remove_comment_reaction.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "removeCommentReaction",
+      "dedicatedToolName": "social_remove_comment_reaction",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 26
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1258
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.remove_post_reaction.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "removePostReaction",
+      "dedicatedToolName": "social_remove_post_reaction",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 24
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1256
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.remove_repost.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "removeRepost",
+      "dedicatedToolName": "social_remove_repost",
+      "dedicatedToolOAuthScope": "social:publish",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 32
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1264
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.unblock_profile.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "unblockProfile",
+      "dedicatedToolName": "social_unblock_profile",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 36
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1268
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "social.unfollow_profile.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "unfollowProfile",
+      "dedicatedToolName": "social_unfollow_profile",
+      "dedicatedToolOAuthScope": "social:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 34
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1266
+      },
+      "workRemaining": "existing direct exposure; audit actual deployed scope and end-to-end contract",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "spot.claim_payout.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "claimSpotPayout",
+      "dedicatedToolName": "spot_claim_payout",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 129
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 796
+      },
+      "workRemaining": "Configure SPOT_CONFIG_ID and explicitly enable SPOT_PAYOUT_CLAIMS_ENABLED only after deploying the matching social_proof_of_truth package. The server checks market/post identity, resolved status and the owner pending dynamic-field payout; native Move rechecks payout delay and eligibility, and the scoped receipt verifies SpotPayoutEvent. Verify owner approval, no-payout, stale-resolution, event amount and historical receipt behavior on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified",
+      "deploymentDefault": "disabled",
+      "registryVersion": "1.14.0"
+    },
+    {
+      "actionId": "spot.create_market.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "createSpotMarket",
+      "dedicatedToolName": "spot_create_market",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 128
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 798
+      },
+      "workRemaining": "Configure SPOT_CONFIG_ID and SPOT_CLAIM_REGISTRY_ID, then explicitly enable SPOT_MARKET_CREATION_ENABLED only after deploying the matching social_proof_of_truth package. The owner wallet must own the exact SpotOracleAdminCap. The service checks cap/config/registry/post types and option limits; Move rechecks duplicate hashes, timing, post state and market constraints. Verify missing/wrong cap, duplicate hashes, invalid timing/options and the exact SpotMarketCreatedEvent receipt on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "oracle_operator_owner_approval_runtime_unverified",
+      "deploymentDefault": "disabled",
+      "registryVersion": "1.16.0"
+    },
+    {
+      "actionId": "spot.place_bet.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "placeSpotBet",
+      "dedicatedToolName": "spot_place_bet",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 102
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 797
+      },
+      "workRemaining": "Configure SPOT_CONFIG_ID and SPOT_CLAIM_REGISTRY_ID, then explicitly enable SPOT_BETTING_ENABLED only after deploying the matching social_proof_of_truth package. The server verifies the open market/post and exact owner-held MYSO coin, amount and option; Move rechecks finalized post analysis, registry linkage, open status and amount. Verify owner approval, closed market, analysis status, exact event and receipt behavior on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_runtime_unverified",
+      "deploymentDefault": "disabled",
+      "registryVersion": "1.15.0"
+    },
+    {
+      "actionId": "spt.buy.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "sptBuy",
+      "dedicatedToolName": "spt_buy",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 99
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 818
+      },
+      "workRemaining": "The `spt_get_trade_quote` read returns Move-matched live pool/config curve and fee output plus nonzero escrow beneficiary addresses; resolve candidates with `poc_get_vault_for_beneficiary`. The quote remains advisory. Owner-run deployment, exact coin/object ownership, cap, minimum output, replay, settlement-event and receipt validation remain.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "source_implemented_deployment_gated_runtime_unverified",
+      "registryVersion": "1.25.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/spt.ts",
+        "line": 48
+      }
+    },
+    {
+      "actionId": "spt.sell.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "sptSell",
+      "dedicatedToolName": "spt_sell",
+      "dedicatedToolOAuthScope": "payments:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 100
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 819
+      },
+      "workRemaining": "The `spt_get_trade_quote` read returns Move-matched live pool/config curve and fee output plus nonzero escrow beneficiary addresses; resolve candidates with `poc_get_vault_for_beneficiary`. The quote remains advisory. Owner-run deployment, exact coin/object ownership, cap, minimum output, replay, settlement-event and receipt validation remain.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "source_implemented_deployment_gated_runtime_unverified",
+      "registryVersion": "1.25.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/spt.ts",
+        "line": 82
+      }
+    },
+    {
+      "actionId": "subscription.cancel_subscription.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "cancelSubscription",
+      "dedicatedToolName": "subscription_cancel_subscription",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 93
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1249
+      },
+      "workRemaining": "Deploy matching native guards/toggle, apply migration 018, configure SUBSCRIPTION_CONFIG_ID and treasury, explicitly enable SUBSCRIPTION_ACTIONS_ENABLED, then owner-run quote/coin/ownership/platform/approval/replay/receipt cases. Owner wallet signatures remain required. UI, service administration/revenue reads and per-period or cumulative budgets remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_subscription_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      },
+      "registryVersion": "1.8.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "subscription.change_service_payment_recipient.v1",
+      "tier": "3",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "changeServicePaymentRecipient",
+      "dedicatedToolName": "subscription_change_service_payment_recipient",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 138
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 812
+      },
+      "workRemaining": "Source path is implemented and compile-checked. Deploy the upgraded MySocial package, then verify the owner-wallet approval, service ownership guard, future payment routing, payout recipient read, and exact ServicePaymentRecipientUpdatedEvent receipt on the owner deployment.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_source_enabled"
+    },
+    {
+      "actionId": "subscription.disable_auto_renew.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "disableAutoRenew",
+      "dedicatedToolName": "subscription_disable_auto_renew",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 95
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1251
+      },
+      "workRemaining": "Deploy matching native guards/toggle, apply migration 018, configure SUBSCRIPTION_CONFIG_ID and treasury, explicitly enable SUBSCRIPTION_ACTIONS_ENABLED, then owner-run quote/coin/ownership/platform/approval/replay/receipt cases. Owner wallet signatures remain required. UI, service administration/revenue reads and per-period or cumulative budgets remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_subscription_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      },
+      "registryVersion": "1.8.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "subscription.enable_auto_renew.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "enableAutoRenew",
+      "dedicatedToolName": "subscription_enable_auto_renew",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 94
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1250
+      },
+      "workRemaining": "Deploy matching native guards/toggle, apply migration 018, configure SUBSCRIPTION_CONFIG_ID and treasury, explicitly enable SUBSCRIPTION_ACTIONS_ENABLED, then owner-run quote/coin/ownership/platform/approval/replay/receipt cases. Owner wallet signatures remain required. UI, service administration/revenue reads and per-period or cumulative budgets remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_subscription_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      },
+      "registryVersion": "1.8.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "subscription.renew_subscription.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "renewSubscription",
+      "dedicatedToolName": "subscription_renew_subscription",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 92
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1248
+      },
+      "workRemaining": "Deploy matching native guards/toggle, apply migration 018, configure SUBSCRIPTION_CONFIG_ID and treasury, explicitly enable SUBSCRIPTION_ACTIONS_ENABLED, then owner-run quote/coin/ownership/platform/approval/replay/receipt cases. Owner wallet signatures remain required. UI, service administration/revenue reads and per-period or cumulative budgets remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_subscription_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      },
+      "registryVersion": "1.8.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "subscription.subscribe_to_plan.v1",
+      "tier": "2",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "subscribeToPlan",
+      "dedicatedToolName": "subscription_subscribe_to_plan",
+      "dedicatedToolOAuthScope": "subscription:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 91
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1247
+      },
+      "workRemaining": "Deploy matching native guards/toggle, apply migration 018, configure SUBSCRIPTION_CONFIG_ID and treasury, explicitly enable SUBSCRIPTION_ACTIONS_ENABLED, then owner-run quote/coin/ownership/platform/approval/replay/receipt cases. Owner wallet signatures remain required. UI, service administration/revenue reads and per-period or cumulative budgets remain separate work.",
+      "verification": "source_and_compile_only",
+      "implementationStatus": "owner_approval_subscription_source_deployment_gated",
+      "partialBuilderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      },
+      "registryVersion": "1.8.0",
+      "deploymentDefault": "disabled",
+      "builderSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/subscription.ts",
+        "line": 1
+      }
+    },
+    {
+      "actionId": "task.accept.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskAccept",
+      "dedicatedToolName": "task_accept",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 46
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1290
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.accept_dispute_settlement.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskAcceptDisputeSettlement",
+      "dedicatedToolName": "task_accept_dispute_settlement",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 65
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1309
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.accept_refund.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskAcceptRefund",
+      "dedicatedToolName": "task_accept_refund",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 55
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1299
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.appeal.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskAppeal",
+      "dedicatedToolName": "task_appeal",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 62
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1306
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.cancel_dispute.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskCancelDispute",
+      "dedicatedToolName": "task_cancel_dispute",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 63
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1307
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.cancel_offer.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskCancelOffer",
+      "dedicatedToolName": "task_cancel_offer",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 48
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1292
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.clear_dispute_settlement.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskClearDisputeSettlement",
+      "dedicatedToolName": "task_clear_dispute_settlement",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 66
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1310
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.create.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskCreate",
+      "dedicatedToolName": "task_create",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 45
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1289
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.decline.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskDecline",
+      "dedicatedToolName": "task_decline",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 47
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1291
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.deliver.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskDeliver",
+      "dedicatedToolName": "task_deliver",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 49
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1293
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.expire_offer.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskExpireOffer",
+      "dedicatedToolName": "task_expire_offer",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 53
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1297
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.open_dispute.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskOpenDispute",
+      "dedicatedToolName": "task_open_dispute",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 59
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1303
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.propose_dispute_settlement.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskProposeDisputeSettlement",
+      "dedicatedToolName": "task_propose_dispute_settlement",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 64
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1308
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.propose_refund.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskProposeRefund",
+      "dedicatedToolName": "task_propose_refund",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 54
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1298
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.refund.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskRefund",
+      "dedicatedToolName": "task_refund",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 51
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1295
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.reject_refund.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskRejectRefund",
+      "dedicatedToolName": "task_reject_refund",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 56
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1300
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.release.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskRelease",
+      "dedicatedToolName": "task_release",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 52
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1296
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.respond_dispute.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskRespondDispute",
+      "dedicatedToolName": "task_respond_dispute",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 60
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1304
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.review.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskReview",
+      "dedicatedToolName": "task_review",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 58
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1302
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.settle.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskSettle",
+      "dedicatedToolName": "task_settle",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 50
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1294
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.submit_evidence.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskSubmitEvidence",
+      "dedicatedToolName": "task_submit_evidence",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 61
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1305
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    },
+    {
+      "actionId": "task.withdraw_refund.v1",
+      "tier": "1",
+      "catalogAvailability": "enabled",
+      "registryDescriptor": "taskWithdrawRefund",
+      "dedicatedToolName": "task_withdraw_refund",
+      "dedicatedToolOAuthScope": "tasks:write",
+      "catalogSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts",
+        "line": 57
+      },
+      "registrySource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts",
+        "line": 1301
+      },
+      "workRemaining": "Runtime/deployment/role/policy/duplicate/finality validation by owner; generated tool uses existing executable registry path.",
+      "currentExposureSource": {
+        "file": "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts",
+        "line": 5
+      },
+      "verification": "source_and_compile_only",
+      "implementationStatus": "dedicated_tool_in_source"
+    }
+  ],
+  "outsideProductionCatalog": [],
+  "limitations": [
+    "Generated tool exposure is not runtime or deployed availability proof.",
+    "OAuth issuer scope registration and every capability/role/deployment condition still need complete validation.",
+    "Native platform, messaging, graph, workflow and non-catalog read/write completeness are separate requirements."
+  ],
+  "priorSourceSha256": {
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts": "ca43e1ecaaf5bc63d01d61ab0df99c27e9ef32b76b0c11d1714dfc7d06784b31",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts": "2469f988bbf505307421c27b829db4302c11c6a7e040103f61ddc3a65cdec83c",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/platform-tools.ts": "a6422b2916f667e0b8918c726c842117b71e8e14c1fe65ae935aad9ae8abe071",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/social-gateway.ts": "483c81f877d05ffa93f42574a6140e5dac74fb4b70b20d0274ed961195801e78",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/tools.ts": "ca28147da15587d88deca00d7c226d287016f2e1511b41c6822e6e0ed0bdaf28"
+  },
+  "registryVersion": "1.33.0",
+  "rollingCompatibility": "1.5 legacy actions; bounded purchase requires 1.6+; MyData owner access requires 1.7+; profile subscriptions require 1.8+; subscription payment-recipient changes require 1.24+; token transfer requires 1.9+; owner-agent policy actions require 1.10+; lowering a ceiling requires 1.33.0+; post tipping requires 1.11+",
+  "mydataReads": [
+    "mydata_list_listings",
+    "mydata_list_graph_offers",
+    "mydata_list_owned_listings",
+    "mydata_get_purchase_quote",
+    "mydata_get_purchase_receipt",
+    "mydata_read_content",
+    "mydata_get_owner_access_receipt",
+    "mydata_search_graph"
+  ],
+  "currentSourceSha256": {
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/production-catalog.ts": "2b0d5cab0c19432be985cc7b036f76177af3e0ffd51be16ae37f12429728b2f8",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/registry-tools.ts": "508d8061975b320c50cdcb2ba50b29cd7c8deea24cac862d002a5d5716cff7fa",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/platform-tools.ts": "51e2d5b99305d9979181154d72308591f6ff53bf987d435b1a9a0d841750515d",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/social-gateway.ts": "1b30f6389a45f715a3fd8b91129a385c7e81f3a910078cb6d4f778c5d82a9920",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/mcp/src/tools.ts": "b043735855bf26430c5306975dc14a78d79cda2e2dc267d67369a46cf8223ff8",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/services/server/src/platform_reads.rs": "9f6057f0e0cb8d144e0d5e11caecae77ced669c87f5a26ebec1411fcd6e98a6a",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/services/server/src/organization_treasury.rs": "a93daf1fe4013163f34d41f6804c3856d54244085cf97ec414d4b411ac1c6fca",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/registry.ts": "634555d7cfb602b9231a4fa849c4d29593e1b193e427c85641c4185aabebd105",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-core/crates/myso-framework/packages/myso-social/sources/memory.move": "4559a3c47e32bfa2dc6c40d3c430b981d0ec834da4409f367571029d2510a1a7",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-agents-app/components/myso-organization-treasury.tsx": "283220ddcae3aab2f93c27e1f1d1ab4bbaf2f4c97772d6e1326c4eea2e048686",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-agents-app/src/server/myso-organization-treasury.ts": "4371a1dd415987625b61422bcf51a15462577dd760185b6e32058ac23ad2b0d7",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/types.ts": "914e128ee2205ce1c72001cef4742dda4d281eb0564396d87ab53c3f8a1c6e0c",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/ptb/platform-admin.ts": "cad97b51378bec33dc5f26397fe418468aa77747e137663832baaf4d56885056",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/packages/sub-agents/src/action-registry/types.ts": "eebf172daf16f7d423061c4c2fb92b790daebc82dd4e9f87ee55eb7c7ca04105",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/services/server/src/platform_admin_actions.rs": "c09b5302873f8a0de4e60c4a81835837606a8c9c113a2ed21f9839b111b79d06",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-memory/services/server/src/routes.rs": "8bce60434537c51e1e76bda1fea4842990ded45d62ee3df51f6c75c5fe4dbf43",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-core/crates/myso-framework/packages/myso-social/sources/platform.move": "582924251cb7e4871a5f9c08cbb99f5771a0670988af8a32b041a7afc1a8361b",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-core/crates/myso-framework/packages/myso-social/sources/agent_task.move": "2df32267bfd40d7a2ef972b718aaef1f93793876e89d0e3eade7b3c3f6ea3e5e",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-agents-app/components/myso-platform-admin.tsx": "732ba5bcf26fc1dc5fa98c10bbb4f4607dfb6b889c206f9f57406f5c5f827e38",
+    "/Users/brandonshaw/Offline-Projects/ProjectYZ/myso-agents-app/src/server/myso-platform-admin.ts": "848ea89c648610be3289cce9cfec817c7ff87658eebc1fffeb30d0ea142e672d"
+  },
+  "updatedAt": "2026-10-26",
+  "mydataContentRead": {
+    "tool": "mydata_read_content",
+    "oauthScope": "mydata:decrypt",
+    "deploymentFlag": "MYDATA_LISTING_ACCESS_ENABLED",
+    "defaultEnabled": false,
+    "maximumPlaintextBytes": 262144,
+    "maximumPageUnits": 8000,
+    "sharedDerivedKeyCache": false,
+    "coordinatorExposure": "blocked_pending_derived_retention_and_revocation"
+  },
+  "subscriptionReads": [
+    "subscription_get_plan_quote",
+    "subscription_get_renewal_quote",
+    "subscription_list_plans",
+    "subscription_get",
+    "subscription_list",
+    "subscription_get_receipt"
+  ],
+  "roomHistorySdk": {
+    "method": "getRoomMessages",
+    "status": "session_bound_hosted_bridge_source_implemented_runtime_unverified",
+    "maxRows": 50,
+    "source": [
+      "myso-memory/packages/mcp/src/hosted-runtime.ts",
+      "myso-memory/services/automation-sidecar/src/bridge.ts",
+      "myso-memory/packages/mcp/src/room-messaging.ts",
+      "myso-messaging-stack/ts-sdks/packages/myso-messaging-stack/src/agent-messaging.ts"
+    ],
+    "runtimeVerified": false,
+    "remaining": [
+      "historical attribution proofs and lossless integer wire validation",
+      "deployment configuration and owner-run end-to-end validation"
+    ]
+  },
+  "paymentReads": [
+    "payments_get_transfer_quote",
+    "payments_list_coins",
+    "payments_get_balance",
+    "payments_get_transfer_receipt"
+  ],
+  "ownerAgentReadTools": [
+    "agent_admin_list",
+    "agent_admin_get_quote",
+    "agent_admin_get_receipt",
+    "agent_admin_owner_rotation_manifest",
+    "agent_admin_owner_rotation_status",
+    "agent_admin_owner_rotation_progress",
+    "agent_admin_owner_rotation_receipt"
+  ],
+  "ownerAgentAuthoritySnapshot": {
+    "tool": "agent_admin_get_quote",
+    "source": "configured fullnode SubAgent/MemoryAccount/MemoryConfig plus system Clock",
+    "fields": [
+      "account active state",
+      "target and ancestor active/expiry chain",
+      "target execution capability mask when the full chain is active",
+      "target per-action MIST limit when the full chain is active"
+    ],
+    "limitSemantics": "per_action_not_cumulative",
+    "runtimeVerified": false,
+    "authority": "snapshot only; Move rechecks current state during execution",
+    "appSurface": {
+      "view": "Agents",
+      "capabilities": [
+        "bounded owner-scoped agent list",
+        "live selected-agent authority quote",
+        "ancestor active/expiry chain",
+        "owner-wallet agent revocation",
+        "owner-wallet capability grant and removal",
+        "owner-wallet raise per-action spend ceiling",
+        "owner-wallet lower per-action spend ceiling"
+      ],
+      "approvalFlow": "dedicated organization-admin approval intent, owner wallet personal-message signature, live policy recheck at preparation, transaction signature, scoped native event receipt",
+      "protocolGap": "Lowering is now available through a native decrease-only action; deployment and owner-run wallet/receipt validation remain.",
+      "runtimeVerified": false
+    }
+  },
+  "mydataDiscovery": {
+    "tool": "mydata_list_listings",
+    "source": "paid public indexer metadata",
+    "quoteRequiredBeforePurchase": true,
+    "metadataOnly": true,
+    "runtimeVerified": false,
+    "remaining": [
+      "configure the authenticated social-server read URL to the MyData indexer API",
+      "runtime verify pagination and active deployment action/capability catalog"
+    ]
+  },
+  "mydataOwnerListings": {
+    "tool": "mydata_list_owned_listings",
+    "identitySource": "authenticated MyData owner fixed server-side",
+    "exposesEncryptedContent": false,
+    "runtimeVerified": false,
+    "source": "myso-memory/services/server/src/platform_reads.rs"
+  },
+  "mydataBuyerHistory": {
+    "tool": "mydata_list_my_purchases",
+    "receiptTool": "mydata_get_purchase_receipt",
+    "scope": "authenticated account owner and derived agent signer; separate bounded result sets",
+    "appSurface": "Knowledge purchase-history recovery view; one exact bounded-purchase event can be checked against the configured fullnode; selecting a row rechecks its live quote",
+    "source": [
+      "myso-core/crates/myso-social-server/src/reader/mydata.rs",
+      "myso-core/crates/myso-social-server/src/server/handlers/mydata.rs",
+      "myso-memory/services/server/src/platform_reads.rs",
+      "myso-memory/packages/mcp/src/platform-tools.ts",
+      "myso-agents-app/src/server/myso-private-data.ts",
+      "myso-agents-app/components/myso-purchase-history.tsx"
+    ],
+    "exposesEncryptedContent": false,
+    "runtimeVerified": false,
+    "remaining": [
+      "legacy unbounded PurchaseEvent rows have no matching verifier in this path",
+      "the owner grant/revocation view recovers action-journaled records only; direct non-agent purchases and organization audience lifecycle need separate chain sources",
+      "per-purchase graph version and signature-digest snapshot is now emitted by Move; current key eligibility is still rechecked during read; series-wide and subscription-period entitlement recovery remains open"
+    ],
+    "immutableGraphSnapshot": {
+      "source": "mydata::GraphPurchaseSnapshotEvent",
+      "fields": [
+        "graphId",
+        "graphVersion",
+        "manifestHashHex",
+        "publicationSignatureDigestHex",
+        "organizationId"
+      ],
+      "verification": "configured-fullnode fullnode event associated with bounded purchase event"
+    }
+  },
+  "socialReads": {
+    "tools": [
+      "social_search",
+      "social_list_posts",
+      "social_list_trending_posts",
+      "social_get_post",
+      "social_list_post_comments",
+      "social_list_post_reactions",
+      "social_list_profile_posts",
+      "social_get_profile",
+      "social_list_profile_followers",
+      "social_list_profile_following",
+      "social_list_approved_platforms"
+    ],
+    "source": "configured public MySo social indexer through authenticated read facade",
+    "runtimeVerified": false,
+    "remaining": [
+      "verify SOCIAL_SERVER_URL routes to compatible MySo indexer API",
+      "owner-run query/pagination and result-shape checks"
+    ]
+  },
+  "taskMarketReads": {
+    "tools": [
+      "task_market_list",
+      "task_market_get_stats"
+    ],
+    "offerStatus": 0,
+    "ownerBoundedTaskListRetained": true,
+    "source": "myso-social-server task index",
+    "runtimeVerified": false,
+    "remaining": [
+      "owner-run denial and freshness verification for stale digest, closed/expired offers, inactive sellers, pagination and stats"
+    ],
+    "implemented": [
+      "task_accept carries the seller-visible termsDigest as Move expected_terms_digest; on-chain stale-term/status/window rejection is enforced before the accepted event"
+    ]
+  },
+  "taskScopeReads": {
+    "tools": [
+      "task_list",
+      "task_list_for_agent",
+      "task_list_for_organization"
+    ],
+    "identitySources": {
+      "task_list": "authenticated owner principal",
+      "task_list_for_agent": "authenticated agent id",
+      "task_list_for_organization": "authenticated organization id"
+    },
+    "statuses": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "source": "myso-social-server task index",
+    "runtimeVerified": false,
+    "remaining": [
+      "verify scope filters against deployed social-server version",
+      "owner-run org-bound and non-org agent cases, pagination and status filter checks"
+    ]
+  },
+  "organizationReads": {
+    "tools": [
+      "organization_list_owned",
+      "organization_get",
+      "organization_get_statistics",
+      "organization_list_roles",
+      "organization_list_role_assignments",
+      "organization_list_invitations",
+      "organization_list_memory_permissions",
+      "organization_list_spend_approvals",
+      "organization_list_spend_breakdown",
+      "organization_list_audit_logs"
+    ],
+    "ownerListIdentityBound": true,
+    "organizationScopeIdentityBound": true,
+    "organizationScopedReads": [
+      "organization_list_roles",
+      "organization_list_role_assignments",
+      "organization_list_invitations",
+      "organization_list_memory_permissions",
+      "organization_list_spend_approvals",
+      "organization_list_spend_breakdown",
+      "organization_list_audit_logs"
+    ],
+    "source": "myso-social-server public organization indexer routes",
+    "runtimeVerified": false,
+    "remaining": [
+      "verify Social Server routes/version and pagination",
+      "confirm organization claims are only issued to current members and owner-run stale-role/revocation cases",
+      "indexed rows are not proof of effective on-chain role or fresh MyData entitlement"
+    ]
+  },
+  "automationLifecycle": {
+    "implemented": [
+      "automation_health",
+      "automation_list_jobs",
+      "automation_update_job",
+      "automation_archive_job",
+      "automation_delete_job",
+      "automation_restore_job",
+      "automation_get_job",
+      "automation_set_job_enabled",
+      "automation_list_runs",
+      "automation_run_job_now",
+      "automation_list_deliveries",
+      "automation_reconcile_delivery",
+      "automation_cancel_delivery",
+      "automation_list_delegates",
+      "automation_list_delegate_key_events",
+      "automation_get_delegate_status",
+      "automation_get_delegate_keys",
+      "automation_store_delegate",
+      "automation_delete_delegate",
+      "automation_create_job",
+      "automation_validate_job",
+      "durable ALL event-trigger state with evaluation windows",
+      "automation_reconcile_orphan_run"
+    ],
+    "deleteDelegateSemantics": "account/agent-scoped deletion of the stored encrypted delegate record; this does not revoke the delegate on-chain or erase copies already disclosed",
+    "pauseResume": "owner/agent scoped; web and desktop control; persisted enabled state; pending deliveries are held unclaimed while paused and re-queued if pause races a worker claim",
+    "remaining": [
+      "fully asynchronous task-harness orchestration beyond bounded callback slices, including durable progress, artifact verification, completion, cancellation, and recovery",
+      "deployment and owner-run end-to-end verification"
+    ],
+    "source": [
+      "myso-memory/packages/mcp/src/platform-tools.ts",
+      "myso-memory/packages/mcp/src/social-gateway.ts",
+      "myso-memory/services/server/src/automation_proxy.rs",
+      "myso-memory/services/automation/src/handlers.rs",
+      "myso-memory/services/automation/src/store.rs",
+      "myso-memory/services/automation/migrations/007_delivery_reconciliation.sql",
+      "myso-memory/services/automation/migrations/008_delivery_resolution_history.sql",
+      "myso-agents-app/src/server/myso-work-api.ts",
+      "myso-agents-app/app/api/myso/automations/[id]/deliveries/**",
+      "myso-agents-app/components/myso-workspace.tsx",
+      "myso-agents-app/app/api/myso/automations/[id]/route.ts",
+      "myso-memory/services/automation-sidecar/src/bridge.ts",
+      "myso-memory/services/automation/migrations/009_delegate_key_event_history.sql",
+      "myso-memory/services/automation/migrations/013_trigger_match_state.sql",
+      "myso-agents-app/app/api/myso/automations/delegates/events/route.ts",
+      "myso-memory/services/automation/src/trigger_eval.rs",
+      "myso-agents-app/components/myso-automation-job-create.tsx",
+      "myso-agents-app/app/api/myso/automations/validate/route.ts",
+      "myso-memory/services/automation/src/main.rs",
+      "myso-memory/services/automation/src/executor.rs",
+      "myso-memory/packages/mcp/src/automation-read-sanitize.ts",
+      "myso-agents-app/app/api/myso/automations/[id]/runs/[runId]/reconcile/route.ts"
+    ],
+    "runtimeVerified": false,
+    "delegateListing": {
+      "pagination": "stable delegate_ref keyset cursor",
+      "defaultLimit": 50,
+      "maximumLimit": 200,
+      "scope": "authenticated account and current agent; owner co-sign may select an agent",
+      "encryptedKeysReturned": false
+    },
+    "replaySemantics": "A reconciliation-held delivery may be manually requeued only after the authenticated owner confirms the action never executed; confirmed success closes it. Completed and cancelled deliveries are not replayable, preventing duplicate effects and preserving the owner\u2019s no-replay decision for cancellations."
+  },
+  "juryReadCoverage": {
+    "tools": [
+      "jury_list_assignments",
+      "jury_list_roster",
+      "jury_list_cases",
+      "jury_get_case",
+      "jury_list_case_rationales",
+      "jury_get_task_dispute",
+      "jury_get_own_profile",
+      "jury_list_cranks",
+      "jury_get_proposal_case",
+      "jury_get_proposal_vote_refunds",
+      "jury_health"
+    ],
+    "caseListRequires": "state or subject_id; full unfiltered inventory rejected",
+    "taskDisputeScope": "verified buyer/seller participant from authenticated account",
+    "jurorScope": "assignments and own profile bind to authenticated agent; roster binds to authenticated owner",
+    "source": [
+      "myso-memory/packages/mcp/src/platform-tools.ts",
+      "myso-memory/services/server/src/platform_reads.rs",
+      "myso-core/crates/myso-social-server/src/server/handlers/jury.rs",
+      "myso-core/crates/myso-social-server/src/server/mod.rs"
+    ],
+    "runtimeVerified": false,
+    "remaining": [
+      "owner-run status filters, case/rationale/redaction and unowned-task denial checks",
+      "verify the configured SOCIAL_SERVER_URL is the compatible jury-enabled deployment"
+    ]
+  },
+  "mydataGraphSearch": {
+    "tool": "mydata_search_graph",
+    "oauthScope": "mydata:decrypt",
+    "schemaVersion": "myso.knowledge-graph.v1",
+    "implementationStatus": "source_compiled_no_runtime",
+    "path": [
+      "packages/sdk/src/knowledge-graph.ts",
+      "packages/sdk/src/memory.ts",
+      "packages/mcp/src/platform-tools.ts",
+      "packages/mcp/src/social-gateway.ts",
+      "src/server/myso-private-data.ts",
+      "app/api/myso/knowledge/graph-search/route.ts",
+      "components/myso-knowledge-reader.tsx"
+    ],
+    "behavior": "Bounded MyData caller-session revalidation on each page, strict typed graph validation, query by node label/statement/aliases, return linked edges/evidence/provenance including evidence derivation lineage; coordinator explicitly excludes graph tool.",
+    "remaining": "Graph publishing/authoring and metadata version history; access entitlement/expiry/revocation read lifecycle; derived/private inference and retention policy; owner runtime validation."
+  },
+  "mydataGraphItemRead": {
+    "tool": "mydata_get_graph_item",
+    "oauthScope": "mydata:decrypt",
+    "schemaVersion": "myso.knowledge-graph.v1",
+    "implementationStatus": "source_compiled_no_runtime",
+    "path": [
+      "packages/sdk/src/knowledge-graph.ts",
+      "packages/sdk/src/memory.ts",
+      "packages/mcp/src/platform-tools.ts",
+      "packages/mcp/src/social-gateway.ts"
+    ],
+    "behavior": "Reads one typed node, edge or evidence item after bounded caller-session revalidation on every page, validates the full graph, returns bounded linked graph context and provenance, and excludes verified assertions as a replacement for independent receipts.",
+    "remaining": "Graph publishing/authoring and metadata version history; access entitlement/expiry/revocation read lifecycle; derived/private inference and retention policy; owner runtime validation."
+  },
+  "mydataGraphDiscovery": {
+    "tool": "mydata_list_graph_offers",
+    "mediaTypes": [
+      "application/vnd.mysocial.knowledge-graph+json;version=1",
+      "application/vnd.mysocial.graph-manifest+json;version=1"
+    ],
+    "source": "public MyData indexer metadata",
+    "quoteRequiredBeforePurchase": true,
+    "metadataOnly": true,
+    "runtimeVerified": false,
+    "remaining": [
+      "verify configured indexer filtering and historical pagination on owner deployment",
+      "series entitlement history, subscription renewal/version selection, and key-release lifecycle are not implemented; immutable per-purchase version/hash/signature-digest snapshots are now emitted and surfaced",
+      "private content still requires mydata_search_graph caller-session validation"
+    ],
+    "purchaseSnapshot": {
+      "status": "implemented_source",
+      "fields": [
+        "graphId",
+        "graphVersion",
+        "manifestHashHex",
+        "publicationSignatureDigestHex"
+      ],
+      "nativeEvent": "mydata::GraphPurchaseSnapshotEvent",
+      "ui": "MySoPurchaseHistory displays the snapshot after fullnode receipt verification"
+    }
+  },
+  "taskReads": {
+    "tools": [
+      "task_list",
+      "task_list_for_agent",
+      "task_list_for_organization",
+      "task_market_list",
+      "task_market_get_stats",
+      "task_get",
+      "task_get_dispute",
+      "task_get_config",
+      "task_get_receipt",
+      "task_get_settlement_receipt",
+      "task_get_deliverable"
+    ],
+    "artifactRetrieval": {
+      "uriScheme": "r2://<seller-address>/<object-id>",
+      "maxBytes": 524288,
+      "digest": "SHA-256 matches the artifact bytes and recorded task digest; disclosure requires a finalized fullnode TaskDelivered event matching task ID, exact R2 URI, and digest.",
+      "authorization": "authenticated buyer or seller account",
+      "runtimeVerified": false,
+      "remaining": [
+        "owner-run participant access, deployment credentials/retention, expiration, content-type, and larger-artifact verification"
+      ]
+    }
+  },
+  "catalogVersion": "1.33.0"
+}

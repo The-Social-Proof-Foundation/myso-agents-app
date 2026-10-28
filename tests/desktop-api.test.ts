@@ -46,17 +46,19 @@ test("desktop capability injects only trusted app mainframe exact-origin API req
 });
 
 test("all methods fail closed for desktop missing/wrong secret; API-only matcher covers SSE/settings/spending", () => {
-	assert(desktopAPIAuthorized(new Headers(), {}), "browser-only API-key mode unchanged");
+	assert(!desktopAPIAuthorized(new Headers(), {}), "hosted requests must not reach legacy local APIs");
 	assert(!desktopAPIAuthorized(new Headers({ [HEADER]: secret }), { MYSO_AGENTS_DESKTOP_SERVER: "1" }), "missing server secret must not disable authorization");
 	for (const value of [undefined, "", "wrong", secret + ", " + secret]) {
 		assert(!desktopAPIAuthorized(new Headers(value === undefined ? {} : { [HEADER]: value }), { MYSO_AGENTS_DESKTOP_SERVER: "1", MYSO_AGENTS_DESKTOP_API_SECRET: secret }));
 	}
 	assert(desktopAPIAuthorized(new Headers({ [HEADER]: secret }), { MYSO_AGENTS_DESKTOP_SERVER: "1", MYSO_AGENTS_DESKTOP_API_SECRET: secret }));
 	for (const pathname of ["/api/events", "/api/chat", "/api/settings/models", "/api/chats/scratch/markdown"]) assert(unstable_doesProxyMatch({ config, nextConfig: {}, url: origin + pathname }));
-	assert(!unstable_doesProxyMatch({ config, nextConfig: {}, url: origin + "/chat/new" }));
+	assert(unstable_doesProxyMatch({ config, nextConfig: {}, url: origin + "/chat/new" }));
+	const originalLegacy = process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API;
 	const originalMarker = process.env.MYSO_AGENTS_DESKTOP_SERVER;
 	const originalSecret = process.env.MYSO_AGENTS_DESKTOP_API_SECRET;
 	try {
+		process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API = "1";
 		process.env.MYSO_AGENTS_DESKTOP_SERVER = "1";
 		process.env.MYSO_AGENTS_DESKTOP_API_SECRET = secret;
 		for (const method of ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]) {
@@ -64,8 +66,23 @@ test("all methods fail closed for desktop missing/wrong secret; API-only matcher
 			assert.equal(proxy(new NextRequest(origin + "/api/settings", { method, headers: { [HEADER]: secret } })).headers.get("x-middleware-next"), "1");
 		}
 	} finally {
+        if (originalLegacy === undefined) delete process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API; else process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API = originalLegacy;
 		if (originalMarker === undefined) delete process.env.MYSO_AGENTS_DESKTOP_SERVER; else process.env.MYSO_AGENTS_DESKTOP_SERVER = originalMarker;
 		if (originalSecret === undefined) delete process.env.MYSO_AGENTS_DESKTOP_API_SECRET; else process.env.MYSO_AGENTS_DESKTOP_API_SECRET = originalSecret;
+	}
+});
+
+test("hosted zkLogin proof routes stay open when the desktop local API is closed", () => {
+	const originalLegacy = process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API;
+	delete process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API;
+	try {
+		for (const pathname of ["/api/zklogin/clock", "/api/zklogin/salt", "/api/zklogin/prove", "/api/zklogin/address"]) {
+			assert.equal(proxy(new NextRequest(origin + pathname, { method: "POST" })).headers.get("x-middleware-next"), "1", pathname);
+		}
+		assert.equal(proxy(new NextRequest(origin + "/api/settings")).status, 403);
+	} finally {
+		if (originalLegacy === undefined) delete process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API;
+		else process.env.MYSO_AGENTS_ENABLE_LEGACY_LOCAL_API = originalLegacy;
 	}
 });
 

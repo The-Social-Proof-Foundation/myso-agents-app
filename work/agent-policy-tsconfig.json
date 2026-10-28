@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "include": [
+    "../components/myso-agent-authority.tsx",
+    "../components/myso-agent-policy-controls.tsx",
+    "../src/server/myso-agent-policy.ts",
+    "../app/api/myso/agent-policy/route.ts"
+  ]
+}

@@ -15,7 +15,7 @@
  *   (button/input/a/…) carve out AUTOMATICALLY via the globals.css auto
  *   carve-out rule (owner standardization ruling, 2026-09-29 night) —
  *   "draggable anywhere that is not a clickable element" is structural,
- *   not per-child discipline; manual lh-no-drag is only for clickable
+ *   not per-child discipline; manual myso-no-drag is only for clickable
  *   non-natives (spans/divs with onClick).
  * - select-none — dragging never highlights the title.
  * - SidebarToggle FIRST — the sidebar reopen when closed, with its

@@ -1,29 +1,7 @@
-/**
- * GET /api/settings/prompts — the system-prompt segment view
- * (settings-storage wave, 2026-09-19): the effective prompt segments for
- * BOTH agents, derived from SOURCE at runtime (src/agent/prompts — the
- * list adapts when the code ships/renames/removes fragments), each with
- * its source text, override text (if a file exists), and effective switch
- * state (settings record's agent.prompts map AND file presence).
- *
- *   GET → 200 {prober: SegmentInfo[], teacher: SegmentInfo[]}
- *   SegmentInfo = {path, sourceText, overrideText, enabled, shared}
- *
- * The shared base appears in BOTH lists under the SAME path
- * ("system-prompt.md") — the prompt-editor's "what's constant between the
- * two agents" is discoverable by path equality. Writes: the switches go
- * through PUT /api/settings/agent; the TEXT goes through
- * PUT/DELETE /api/settings/prompts/[...segment].
- */
-
-import { effectivePromptSegments, readSettingsRecord } from "@/src/server";
-
-export const dynamic = "force-dynamic";
-
+/** LearnHarness teaching-prompt inspection was removed with the teaching loop. */
 export async function GET() {
-	const switches = readSettingsRecord()?.agent?.prompts ?? {};
-	return Response.json({
-		prober: effectivePromptSegments("prober", switches),
-		teacher: effectivePromptSegments("teacher", switches),
-	});
+	return Response.json(
+		{ error: "Teaching prompt settings are retired.", code: "legacy_teaching_prompts_retired" },
+		{ status: 410, headers: { "Cache-Control": "no-store" } },
+	);
 }

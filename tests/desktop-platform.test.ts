@@ -68,7 +68,7 @@ describe("desktop window chrome", () => {
 			require: () => ({
 				contextBridge: {
 					exposeInMainWorld(name: string, api: Record<string, unknown>) {
-						assert.equal(name, "lh");
+						assert.equal(name, "mysoAgents");
 						bridge = api;
 					},
 				},
@@ -78,7 +78,7 @@ describe("desktop window chrome", () => {
 		runInNewContext(readFileSync(new URL("../electron/preload.cjs", import.meta.url), "utf8"), context);
 		assert.equal(bridge.platform, "win32");
 		assert.deepEqual(Object.keys(bridge).sort(), [
-			"chatgpt", "expandWindow", "getZoom", "installUpdate", "onUpdateStatus", "onZoom", "platform",
+			"chatgpt", "expandWindow", "getZoom", "installUpdate", "myso", "onUpdateStatus", "onZoom", "platform",
 		]);
 	});
 });
@@ -103,15 +103,15 @@ describe("desktop packaging policy", () => {
 			{ target: "AppImage", arch: ["x64"] }, { target: "deb", arch: ["x64"] },
 		]);
 		assert.equal(config.linux.syncDesktopName, true);
-		assert.equal(config.publish[0].releaseType, "draft");
+		assert.equal(config.publish, null);
 	});
 
 	it("deb has public maintainer metadata and a matching desktop identity", () => {
 		const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 		assert.equal(pkg.author.name, "Amos Blomqvist");
 		assert.equal(pkg.author.email, "255718537+amosblomqvist@users.noreply.github.com");
-		assert.equal(pkg.homepage, "https://github.com/amosblomqvist/learnharness");
-		assert.equal(pkg.desktopName, "learnharness.desktop");
+		assert.equal(pkg.homepage, "");
+		assert.equal(pkg.desktopName, "myso-agents.desktop");
 	});
 });
 

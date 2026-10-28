@@ -24,10 +24,11 @@
  *     would shadow every settings-page key change until restart.
  */
 
-const { app, BrowserWindow, Menu, ipcMain, session, shell, dialog } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, safeStorage, session, shell, dialog } = require("electron");
 const { createChatGPT, fileStore } = require("./chatgpt.cjs");
 const { attachChatGPTChild, trustedSender, chatGPTControl } = require("./chatgpt-ipc.cjs");
 const { desktopAPIHeaders } = require("./desktop-api.cjs");
+const { createMySoDesktopConnection } = require("./myso-auth.cjs");
 const { randomBytes } = require("node:crypto");
 const { spawn } = require("node:child_process");
 const fs = require("node:fs");
@@ -43,8 +44,8 @@ const PRODUCT_NAME = "MySo Agents";
 
 // APP NAME → userData (owner, 2026-10-10): the Application Support dir is
 // exactly "MySo Agents" in dev AND packaged. Packaged Electron would
-// otherwise derive it from package.json "name" (now lowercase
-// "learnharness"), and productName metadata alone doesn't reach app.name.
+// otherwise derive it from package.json "name" ("myso-agents"), and
+// productName metadata alone doesn't reach app.name.
 // Must run before the MYSO_AGENTS_DEV_URL suffix below — dev becomes
 // "MySo Agents-dev".
 app.setName(PRODUCT_NAME);
@@ -136,6 +137,8 @@ let chatgpt = null;
 let chatgptChild = null;
 // Per-launch request capability, never OAuth tokens and never renderer state.
 let desktopAPISecret = null;
+let desktopHandoffSecret = null;
+let mySoDesktopConnection;
 const trustedAppWindows = new Set();
 
 // A GUI shell must never die to a stray exception (EPIPE dialogs, a race
@@ -212,6 +215,11 @@ function startServer(port) {
 					MYSO_AGENTS_AUTH_FILE: AUTH_FILE(),
 					MYSO_AGENTS_DESKTOP_SERVER: "1",
 					MYSO_AGENTS_DESKTOP_API_SECRET: desktopAPISecret,
+                    MYSO_AGENTS_DESKTOP_HANDOFF_SECRET: desktopHandoffSecret,
+                    MYSO_AGENTS_PUBLIC_ORIGIN: `http://127.0.0.1:${port}`,
+                    // Per-launch cookie encryption by default; no unencrypted session secret on disk.
+                    // Sessions also bind to the owned origin; a new loopback port requires reconnection.
+                    MYSO_AGENTS_SESSION_KEY: process.env.MYSO_AGENTS_SESSION_KEY || randomBytes(32).toString("base64"),
 				},
 				stdio: ["ignore", "pipe", "pipe", "ipc"],
 			},
@@ -357,7 +365,7 @@ function createWindow(url) {
 
 	void win.loadURL(url);
 	// Zoom truth reaches the renderer for EVERY load (reload, nav): the
-	// renderer's --lh-zoom must never go stale. The fallback catcher below
+	// renderer's --myso-agents-zoom must never go stale. The fallback catcher below
 	// covers ⌘= / layout variants the menu's ⌘Plus may not claim — menu-
 	// claimed keys never reach before-input-event, so exactly one of the
 	// two applies any given zoom keypress.
@@ -384,7 +392,7 @@ function createWindow(url) {
  * button rides away from them zoomed in, content slides under them
  * zoomed out. Here zoom is explicit: a factor ladder, applied through
  * setZoomFactor, and broadcast to the renderer ("myso-agents:zoom" — it publishes
- * --lh-zoom so gutter lengths can divide by it and stay PHYSICAL-
+ * --myso-agents-zoom so gutter lengths can divide by it and stay PHYSICAL-
  * constant). The traffic lights themselves stay at their construction
  * position ({x:16, y:22.5} — Electron 44 has NO runtime setter, only
  * the BrowserWindow option), which is HIG-correct anyway: native lights
@@ -546,7 +554,7 @@ function installMenu() {
 				{ type: "separator" },
 				// OWNED zoom (see applyZoom): the roles change zoomLevel
 				// silently; these broadcast the factor and re-seat the
-				// traffic lights. The renderer's --lh-zoom depends on
+				// traffic lights. The renderer's --myso-agents-zoom depends on
 				// hearing every change.
 				{
 					label: "Actual Size",
@@ -574,6 +582,7 @@ function installMenu() {
 
 async function main() {
 	app.on("window-all-closed", () => {
+        void mySoDesktopConnection?.cancel();
 		chatgpt?.pause();
 		// macOS convention: the app stays resident, reactivated from the Dock.
 		if (process.platform !== "darwin") app.quit();
@@ -591,14 +600,27 @@ async function main() {
 	// (guards, menu, single instance).
 	const devUrl = process.env.MYSO_AGENTS_DEV_URL;
 	const url = devUrl ?? `http://127.0.0.1:${await freePort()}`;
-	if (!devUrl) {
-		desktopAPISecret = randomBytes(32).toString("hex");
-		const ownedOrigin = new URL(url).origin;
+    // The development launcher owns both processes and supplies the same private
+    // capabilities. An arbitrary external dev URL does not gain a desktop handoff.
+    const ownedDev = !!devUrl && process.env.MYSO_AGENTS_DESKTOP_SERVER === "1"
+        && /^[0-9a-f]{64}$/.test(process.env.MYSO_AGENTS_DESKTOP_API_SECRET ?? "")
+        && /^[0-9a-f]{64}$/.test(process.env.MYSO_AGENTS_DESKTOP_HANDOFF_SECRET ?? "");
+    if (ownedDev) {
+        const parsed = new URL(url);
+        if (parsed.origin !== process.env.MYSO_AGENTS_PUBLIC_ORIGIN || parsed.protocol !== "http:" || parsed.hostname !== "127.0.0.1" || parsed.pathname !== "/" || parsed.search || parsed.hash || parsed.username || parsed.password) throw new Error("Owned desktop development requires its exact private loopback origin");
+    }
+    if (!devUrl || ownedDev) {
+        desktopAPISecret = ownedDev ? process.env.MYSO_AGENTS_DESKTOP_API_SECRET : randomBytes(32).toString("hex");
+        desktopHandoffSecret = ownedDev ? process.env.MYSO_AGENTS_DESKTOP_HANDOFF_SECRET : randomBytes(32).toString("hex");
+        if (desktopAPISecret === desktopHandoffSecret) throw new Error("Desktop request and account handoff capabilities must be distinct");
+        const ownedOrigin = new URL(url).origin;
 		// All URLs, not only /api: remove the header again on external redirects.
 		session.defaultSession.webRequest.onBeforeSendHeaders({ urls: ["<all_urls>"] }, (details, callback) => {
 			callback({ requestHeaders: desktopAPIHeaders(details, ownedOrigin, desktopAPISecret, [...trustedAppWindows]) });
-		});
-		chatgpt = createChatGPT({
+        });
+    }
+    if (!devUrl) {
+        chatgpt = createChatGPT({
 			store: fileStore(path.join(app.getPath("userData"), "chatgpt-credentials.json")),
 			openExternal: (target) => shell.openExternal(target),
 			onChange: (value) => {
@@ -614,6 +636,110 @@ async function main() {
 	} else {
 		log(`dev mode: ${devUrl}`);
 	}
+
+    // System-browser PKCE hands its encrypted cookie only to main; the renderer never
+    // receives a ticket, token, cookie value, authorization URL or arbitrary IPC operation.
+    if (desktopHandoffSecret) {
+        const ownedOrigin = new URL(url).origin;
+        const sessionFile = path.join(app.getPath("userData"), "myso-account-session.bin");
+        /** @type {{refreshToken:string, expiresAt:number}|null} */
+        let memoryRefresh = null;
+        /** @type {ReturnType<typeof setTimeout>|undefined} */
+        let renewalTimer;
+        /** @type {Promise<void>|null} */
+        let renewalInFlight = null;
+        const recordRefresh = (value) => !!value && typeof value === "object" && typeof value.refreshToken === "string" && /^[A-Za-z0-9_-]{43}$/.test(value.refreshToken) && typeof value.expiresAt === "number" && Number.isSafeInteger(value.expiresAt);
+        const readStoredRefresh = () => {
+            if (!safeStorage.isEncryptionAvailable() || !fs.existsSync(sessionFile)) return null;
+            try {
+                const parsed = JSON.parse(safeStorage.decryptString(fs.readFileSync(sessionFile)));
+                if (!recordRefresh(parsed)) return null;
+                return parsed;
+            } catch { return null; }
+        };
+        const forgetRefresh = () => {
+            memoryRefresh = null;
+            if (renewalTimer) clearTimeout(renewalTimer);
+            renewalTimer = undefined;
+            fs.rmSync(sessionFile, { force: true });
+        };
+        const rememberRefresh = (refreshToken, expiresAt) => {
+            memoryRefresh = { refreshToken, expiresAt };
+            if (!safeStorage.isEncryptionAvailable()) return;
+            try {
+                fs.writeFileSync(sessionFile, safeStorage.encryptString(JSON.stringify({ refreshToken, expiresAt })), { mode: 0o600 });
+            } catch { /* The sign-in still lasts for this launch. */ }
+        };
+        const renewStored = (refreshToken) => {
+            if (renewalInFlight) return renewalInFlight;
+            renewalInFlight = (async () => {
+                let outcome;
+                try { outcome = await mySoDesktopConnection.renew(refreshToken); }
+                catch { outcome = { status: "retry" }; }
+                if (outcome.status === "refreshed") {
+                    rememberRefresh(outcome.refreshToken, outcome.expiresAt);
+                    scheduleRenewal(outcome.refreshToken, outcome.expiresAt);
+                } else if (outcome.status === "revoked") {
+                    forgetRefresh();
+                    const cookies = await session.defaultSession.cookies.get({ url: ownedOrigin, name: "myso_agents_session" });
+                    if (cookies.length) await session.defaultSession.cookies.remove(ownedOrigin, "myso_agents_session");
+                    await session.defaultSession.cookies.set({ url: ownedOrigin, name: "myso_session_reconnect", value: "1", httpOnly: false, sameSite: "lax", secure: new URL(ownedOrigin).protocol === "https:", path: "/", expirationDate: (Date.now() + 10 * 60 * 1000) / 1000 });
+                } else {
+                    if (renewalTimer) clearTimeout(renewalTimer);
+                    renewalTimer = setTimeout(() => { void renewStored(refreshToken); }, 60_000);
+                }
+            })().finally(() => { renewalInFlight = null; });
+            return renewalInFlight;
+        };
+        const scheduleRenewal = (refreshToken, expiresAt) => {
+            if (renewalTimer) clearTimeout(renewalTimer);
+            const delay = Math.max(0, expiresAt - Date.now() - 2 * 60 * 1000);
+            renewalTimer = setTimeout(() => { void renewStored(refreshToken); }, delay);
+        };
+        mySoDesktopConnection = createMySoDesktopConnection({
+            origin: ownedOrigin, secret: desktopHandoffSecret,
+            openExternal: (destination) => shell.openExternal(destination),
+            installSession: async (grant, signal) => {
+                signal.throwIfAborted();
+                await session.defaultSession.cookies.set({ url: ownedOrigin, name: "myso_agents_session", value: grant.value, httpOnly: true, sameSite: "lax", secure: new URL(ownedOrigin).protocol === "https:", path: "/", expirationDate: grant.expiresAt / 1000 });
+                signal.throwIfAborted();
+            },
+            clearSession: async (value) => {
+                const cookies = await session.defaultSession.cookies.get({ url: ownedOrigin, name: "myso_agents_session" });
+                if (cookies.some((cookie) => cookie.value === value)) await session.defaultSession.cookies.remove(ownedOrigin, "myso_agents_session");
+            },
+            persistRefresh: (refreshToken, expiresAt) => {
+                rememberRefresh(refreshToken, expiresAt);
+                scheduleRenewal(refreshToken, expiresAt);
+            },
+        });
+        const stored = readStoredRefresh();
+        if (stored) await renewStored(stored.refreshToken);
+        ipcMain.handle("myso-agents:account:logout", async (event) => {
+            const win = BrowserWindow.fromWebContents(event.sender);
+            if (!trustedAppWindows.has(win) || !trustedSender(event, ownedOrigin, BrowserWindow)) return { ok: false };
+            const token = memoryRefresh?.refreshToken ?? readStoredRefresh()?.refreshToken;
+            if (token) await mySoDesktopConnection.logout(token).catch(() => {});
+            forgetRefresh();
+            const cookies = await session.defaultSession.cookies.get({ url: ownedOrigin, name: "myso_agents_session" });
+            if (cookies.length) await session.defaultSession.cookies.remove(ownedOrigin, "myso_agents_session");
+            await session.defaultSession.cookies.remove(ownedOrigin, "myso_session_reconnect");
+            return { ok: true };
+        });
+    }
+    ipcMain.handle("myso-agents:account:connect", async (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (!trustedAppWindows.has(win) || !trustedSender(event, new URL(url).origin, BrowserWindow)) return { connected: false, error: "Untrusted desktop request" };
+        if (!mySoDesktopConnection) return { connected: false, error: "Desktop sign-in requires the app's owned private server" };
+        const cancel = () => { void mySoDesktopConnection.cancel(); };
+        win.once("closed", cancel);
+        try { return await mySoDesktopConnection.connect(); }
+        finally { if (!win.isDestroyed()) win.removeListener("closed", cancel); }
+    });
+    ipcMain.handle("myso-agents:account:cancel", async (event) => {
+        if (!trustedAppWindows.has(BrowserWindow.fromWebContents(event.sender)) || !trustedSender(event, new URL(url).origin, BrowserWindow)) return { cancelled: false };
+        return await mySoDesktopConnection?.cancel() ?? { cancelled: true };
+    });
 
 	// Renderer controls contain no token/URL/code operation. The separate server
 	// child is the only recipient of credential leases over inherited IPC.

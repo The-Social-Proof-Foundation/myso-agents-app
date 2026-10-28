@@ -6,26 +6,15 @@
 #     because native .node/dylib can't dlopen from a read-only archive and
 #     server.js process.chdir()s into its own dir;
 #   - the asar holds only the shell (electron/main.cjs + package.json);
-#   - signed + notarized since 2026-10-08 (Developer ID Application cert in
-#     the login keychain; notary credentials in the MYSO_AGENTS_NOTARY keychain
-#     profile; the profile + team env vars are baked into desktop:dist).
-appId: "${env.MYSO_AGENTS_APP_ID}"
+#   - distribution identity and signing are supplied by the MySo owner.
+#     Upstream signing credentials and update feeds are deliberately absent.
+appId: com.mysocial.agents
 productName: MySo Agents
 directories:
   output: dist
-# Icons (owner ruling, 2026-10-13) — per-platform sources in build/:
-#   mac   build/icon.icon  — the Icon Composer document (layered Liquid
-#         Glass); actool (Xcode 26+) compiles Assets.car (CFBundleIconName,
-#         macOS 26+ renders the true layered icon) + an actool fallback icns
-#         capped at 256px, which scripts/after-pack.cjs swaps for the
-#         hand-packed full-res build/icon.icns (pre-Tahoe keeps 16→1024).
-#         Requires actool ≥ 26: desktop:dist injects DEVELOPER_DIR locally;
-#         the release workflow's mac job runs setup-xcode.
-#   win   build/icon.ico  — generated (16→256) from the flat design by
-#         scripts/make-icons.mjs.
-#   linux build/icon.png  — 512×512, same script. Rounded squircle with
-#         baked transparency on both (owner ruling) — Windows/Linux don't
-#         mask, the shape ships in the artwork.
+# Use the owner's existing MySocial assets. electron-builder compiles the PNG
+# into the macOS icon when packaging. No upstream Icon Composer/fallback hook
+# or installer background is active in this fork.
 files:
   # Only the shell goes into the asar. ORDER IS LOAD-BEARING (payload
   # wave, 2026-09-24): electron-builder's dependency collector packs the
@@ -100,7 +89,7 @@ extraResources:
     filter:
       - "standalone/**/*"
 mac:
-  icon: build/icon.icon
+  icon: build/myso-icon.png
   # zip rides next to dmg (flipped 2026-10-08): Squirrel.Mac — Electron's
   # macOS auto-updater — installs from ZIP and cannot read DMGs. DMG is
   # for humans; ZIP + blockmap are the updater's payload.
@@ -123,19 +112,12 @@ mac:
     NSMicrophoneUsageDescription: "MySo Agents uses the microphone only for speech-to-text input into your sessions."
   hardenedRuntime: true
   entitlements: build/entitlements.mac.plist
-  # Signing + notarization (flipped 2026-10-08): identity auto-detects the
-  # Developer ID Application certificate from the login keychain;
-  # notarize: true makes electron-builder sign → submit to Apple's notary
-  # service → staple the ticket, all inside this one build (credentials
-  # via the MYSO_AGENTS_NOTARY keychain profile, env baked into desktop:dist).
-  # Adds minutes per build (Apple's scan queue). Verification battery:
-  # codesign --verify --deep / spctl --assess / stapler validate.
+  # Configure owner signing/notarization explicitly before distributing.
   notarize: false
 dmg:
   title: "${productName} ${version}"
   # Owner artwork: 540×380 at 1×; the sibling background@2x.png is
   # combined into a Retina TIFF by dmg-builder. Centres use 1× coordinates.
-  background: build/background.png
   iconSize: 80
   contents:
     - x: 130
@@ -145,9 +127,8 @@ dmg:
       y: 190
       type: link
       path: /Applications
-afterPack: scripts/after-pack.cjs
 win:
-  icon: build/icon.ico
+  icon: build/myso-icon.ico
   target:
     - target: nsis
       arch:
@@ -161,7 +142,7 @@ nsis:
   oneClick: true
   perMachine: false
 linux:
-  icon: build/icon.png
+  icon: build/myso-icon.png
   target:
     - target: AppImage
       arch:
@@ -171,6 +152,7 @@ linux:
         - x64
   artifactName: "${productName}-${version}-${arch}.${ext}"
   category: Office
+  executableName: myso-agents
   # Match Electron's app_id/WM_CLASS to the installed desktop launcher.
   syncDesktopName: true
   # Both targets update via electron-updater 6.8.9. AppImage replaces its

@@ -39,7 +39,7 @@ function fixture(initial = disconnected(), overrides: Partial<ChatGPTControlBrid
   consent: async (enabled) => { calls.consent.push(enabled); push({ ...status, allowBackgroundUse: enabled }); return status; },
   onChange: (cb) => { listeners.add(cb); return () => listeners.delete(cb); }, ...overrides,
  };
- window.lh = { expandWindow() {}, chatgpt: bridge };
+ window.mysoAgents = { expandWindow() {}, chatgpt: bridge };
  return { calls, bridge, push, get status() { return status; }, complete() { push({ ...connected(status.allowBackgroundUse), pending: false }); } };
 }
 async function mount(children: React.ReactNode = <ChatGPTConnection />) {
@@ -56,7 +56,7 @@ async function selectAccount(label: string, id: string) {
 }
 async function begin() { await click(byTest("chatgpt-login")); await click(byTest("chatgpt-proceed")); }
 async function confirmDisconnect() { await click(byTest("chatgpt-disconnect")); await click(byTest("chatgpt-confirm-disconnect")); }
-afterEach(async () => { await act(async () => root?.unmount()); host?.remove(); root = undefined; host = undefined; delete window.lh; globalThis.fetch = originalFetch; });
+afterEach(async () => { await act(async () => root?.unmount()); host?.remove(); root = undefined; host = undefined; delete window.mysoAgents; globalThis.fetch = originalFetch; });
 
 test("Providers is the first/default page; General is last and other pages keep relative order", () => {
  const html = renderToStaticMarkup(<SettingsDialogBody onClose={() => {}} />);
@@ -419,7 +419,7 @@ test("real main/control bridge: immediate pending, actual cancellation, verified
   const jwt = await new SignJWT({ nonce: authorize.searchParams.get("nonce"), email: "fixture@example.invalid" }).setProtectedHeader({ alg: "RS256", kid: "ui-fixture" }).setIssuer("https://auth.openai.com").setSubject("fixture-subject").setAudience(form.get("client_id")!).setIssuedAt().setExpirationTime("1h").sign(privateKey);
   return Response.json({ access_token: "fixture-access", refresh_token: "fixture-refresh", id_token: jwt, token_type: "Bearer", expires_in: 3600, scope: SCOPES.join(" ") });
  } });
- window.lh = { expandWindow() {}, chatgpt: { status: () => chatGPTControl({ op: "status" }, service), login: (id) => chatGPTControl({ op: "login", id }, service), cancel: () => chatGPTControl({ op: "cancel" }, service), select: (id) => chatGPTControl({ op: "select", id }, service), disconnect: (id) => chatGPTControl({ op: "disconnect", id }, service), logout: (id) => chatGPTControl({ op: "logout", id }, service), consent: (enabled) => chatGPTControl({ op: "consent", enabled }, service), onChange: (cb) => { listeners.add(cb); return () => listeners.delete(cb); } } };
+ window.mysoAgents = { expandWindow() {}, chatgpt: { status: () => chatGPTControl({ op: "status" }, service), login: (id) => chatGPTControl({ op: "login", id }, service), cancel: () => chatGPTControl({ op: "cancel" }, service), select: (id) => chatGPTControl({ op: "select", id }, service), disconnect: (id) => chatGPTControl({ op: "disconnect", id }, service), logout: (id) => chatGPTControl({ op: "logout", id }, service), consent: (enabled) => chatGPTControl({ op: "consent", enabled }, service), onChange: (cb) => { listeners.add(cb); return () => listeners.delete(cb); } } };
  try {
   await mount(); await begin(); assert.equal((await service.status()).pending, true); await click(button("Cancel", byTest("chatgpt-account-dialog"))); assert.equal((await service.status()).pending, false); assert.equal(tokenCalls, 0);
   await click(byTest("chatgpt-login")); await click(toggle()); await click(byTest("chatgpt-proceed"));

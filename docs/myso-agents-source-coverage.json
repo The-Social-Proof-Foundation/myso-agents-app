@@ -1098,7 +1098,7 @@
         "line": 88
       },
       "registrySource": null,
-      "workRemaining": "implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP"
+      "workRemaining": "Not available for MySo Agents: File Storage is not running, and the checked-in Walrus contract hardcodes Coin<WAL> in walrus::system::reserve_space_for_epochs and related accounting/staking state. The owner has directed that agents spend only MYSO and task artifacts use Cloudflare R2 for now. Do not expose this action or spend WAL; revisit only after a deployed MySo-denominated storage protocol exists."
     },
     {
       "actionId": "payments.tip_post.v1",
@@ -1364,7 +1364,7 @@
         "line": 107
       },
       "registrySource": null,
-      "workRemaining": "implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP"
+      "workRemaining": "Owner-deferred: do not add bridge MCP in this implementation. Keep the action unavailable unless the owner reopens its scope."
     },
     {
       "actionId": "organization.create.v1",
@@ -1604,7 +1604,7 @@
         "line": 125
       },
       "registrySource": null,
-      "workRemaining": "implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP"
+      "workRemaining": "Native builders, manifest/progress/read receipts, and resumable web/desktop old-owner proposal plus recipient wallet/multisig acceptance and rollback exist. Dedicated MCP prepare/sign workflow, explicit owner-selected transferable objects, and deployment/runtime verification remain open."
     },
     {
       "actionId": "account.configure_multisig.v1",
@@ -1618,7 +1618,7 @@
         "line": 126
       },
       "registrySource": null,
-      "workRemaining": "implement deterministic builder/adapter, resolver, policy and effect parser; then expose MCP"
+      "workRemaining": "The owner-migration UI now derives a native multisig address and signs acceptance/rollback batches with verified wallet signatures; MCP `account_configure_multisig` now derives a verified descriptor from public keys. It does not mutate chain state; complete configuration/action execution and generic multisig support for other actions remain unimplemented."
     },
     {
       "actionId": "poc.claim_creator_vault.v1",

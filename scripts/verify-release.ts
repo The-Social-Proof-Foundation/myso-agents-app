@@ -259,7 +259,7 @@ export function verifyConfigAssumptions(config: unknown, pkg: unknown): { ok: tr
 	const errors: Issues = [];
 	const bad = (message: string) => errors.push(message);
 	if (!isPlainObject(pkg) || typeof pkg.version !== "string") bad("package.json has no string version");
-	if (!isPlainObject(pkg) || pkg.name !== "learnharness") bad("package.json name is no longer \"learnharness\"");
+	if (!isPlainObject(pkg) || pkg.name !== "myso-agents") bad("package.json name is no longer \"myso-agents\"");
 	if (!isPlainObject(config)) {
 		return { ok: false, errors: ["electron-builder.yml did not parse to a mapping", ...errors] };
 	}
@@ -292,9 +292,8 @@ export function verifyConfigAssumptions(config: unknown, pkg: unknown): { ok: tr
 			bad(`linux.target changed (${JSON.stringify(config.linux.target)}) — expected names no longer hold`);
 		}
 	}
-	const publish = Array.isArray(config.publish) ? config.publish[0] : undefined;
-	if (!isPlainObject(publish) || publish.provider !== "github" || publish.releaseType !== "draft") {
-		bad(`publish[0] must be the github provider with releaseType "draft" (${JSON.stringify(config.publish)}) — uploads would not land in the draft`);
+	if (config.publish != null) {
+		bad("publish must stay disabled in the fork's base configuration; owner release jobs supply the destination explicitly");
 	}
 	if (errors.length > 0) {
 		errors.push("packaging config drifted from the verified shapes — re-derive the expected assets in scripts/verify-release.ts");

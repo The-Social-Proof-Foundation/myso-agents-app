@@ -17,9 +17,13 @@ concurrency:
 
 env:
   NEXT_TELEMETRY_DISABLED: "1"
+  RELEASE_OWNER: ${{ github.repository_owner }}
+  RELEASE_REPO: ${{ github.event.repository.name }}
 
 jobs:
   quality:
+    # Distribution stays disabled until real platform signing is configured.
+    if: vars.MYSO_AGENTS_RELEASE_ENABLED == 'true' && vars.MYSO_AGENTS_SIGNING_READY == 'true'
     name: Release gates
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -157,12 +161,12 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: npx electron-builder ${{ matrix.builder_args }} --publish always -c.forceCodeSigning=true
+        run: npx electron-builder ${{ matrix.builder_args }} --publish always -c.forceCodeSigning=true -c.mac.notarize=true -c.publish.provider=github -c.publish.owner="$RELEASE_OWNER" -c.publish.repo="$RELEASE_REPO" -c.publish.releaseType=draft
       - name: Windows/Linux release → draft
         if: github.event_name == 'push' && runner.os != 'macOS'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx electron-builder ${{ matrix.builder_args }} --publish always
+        run: npx electron-builder ${{ matrix.builder_args }} --publish always -c.publish.provider=github -c.publish.owner="$RELEASE_OWNER" -c.publish.repo="$RELEASE_REPO" -c.publish.releaseType=draft
       - name: Unsigned macOS rehearsal (no publish, no notarization)
         if: github.event_name == 'workflow_dispatch' && runner.os == 'macOS'
         env:
@@ -185,7 +189,7 @@ jobs:
               ;;
             Linux)
               payload="dist/linux-unpacked/resources/server/standalone"
-              runtime="dist/linux-unpacked/learnharness"
+              runtime="dist/linux-unpacked/myso-agents"
               ;;
           esac
           node scripts/smoke-provider-runtime.mjs --standalone "$payload"
@@ -198,16 +202,16 @@ jobs:
               node scripts/smoke-demo-runtime.mjs --standalone "$app/Resources/server/standalone" --runtime "$app/MacOS/MySo Agents" --browser
               ;;
             Windows)
-              node scripts/smoke-demo-runtime.mjs --standalone dist/win-unpacked/resources/server/standalone --runtime dist/win-unpacked/MySo Agents.exe --browser
+              node scripts/smoke-demo-runtime.mjs --standalone dist/win-unpacked/resources/server/standalone --runtime "dist/win-unpacked/MySo Agents.exe" --browser
               ;;
             Linux)
-              xvfb-run -a node scripts/smoke-demo-runtime.mjs --standalone dist/linux-unpacked/resources/server/standalone --runtime dist/linux-unpacked/learnharness --browser
+              xvfb-run -a node scripts/smoke-demo-runtime.mjs --standalone dist/linux-unpacked/resources/server/standalone --runtime dist/linux-unpacked/myso-agents --browser
               ;;
           esac
       - name: Save installers and update metadata
         uses: actions/upload-artifact@v7
         with:
-          name: learnharness-${{ matrix.platform }}
+          name: myso-agents-${{ matrix.platform }}
           retention-days: 7
           if-no-files-found: error
           path: |

@@ -737,8 +737,7 @@ export function recoverStaleJobs(): void {
 	}
 }
 
-/** The /api/jobs entry: job list for the client poll (+ lazy recovery). */
+/** Read-only snapshot retained for legacy history/activity views. */
 export function listJobs(chatId: string): JobRecord[] {
-	if (process.env.NODE_ENV !== "test") recoverStaleJobs();
 	return stores.jobStore.listJobs(chatId);
 }

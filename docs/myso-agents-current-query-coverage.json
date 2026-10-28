@@ -1,0 +1,5622 @@
+{
+  "schemaVersion": "myso.agents.mcp-query-coverage.v1",
+  "refreshedAt": "2026-10-28",
+  "evidenceLevel": "static_source_inventory",
+  "inventoryScope": "PLATFORM_TOOLS entries in platform-tools.ts that expose /api/agent/read/* routes. Other custom MCP tools and non-platform route families are outside this generated inventory.",
+  "source": {
+    "mcpToolRegistry": "../myso-memory/packages/mcp/src/platform-tools.ts",
+    "memoryReadDispatcher": "../myso-memory/services/server/src/platform_reads.rs"
+  },
+  "summary": {
+    "platformToolReadRoutes": 299,
+    "platformToolsByOAuthScope": {
+      "social:read": 161,
+      "ai:read": 6,
+      "social:approve": 1,
+      "payments:read": 22,
+      "messaging:read": 11,
+      "organization:read": 14,
+      "agent:read": 15,
+      "subscription:read": 6,
+      "tasks:read": 17,
+      "chain:read": 1,
+      "mydata:read": 31,
+      "mydata:purchase": 1,
+      "jury:read": 13
+    },
+    "exactServerReadResourcesWithoutPlatformTool": [],
+    "platformToolResourcesWithoutExactOrFamilyDispatch": [],
+    "platformReadFacadeRouteNameCoverageComplete": true,
+    "serverFamilyDispatchPrefixes": [
+      "agent_admin_",
+      "assets_",
+      "payments_",
+      "poc_",
+      "social_insurance_",
+      "social_messaging_",
+      "social_mydata_",
+      "social_poc_",
+      "social_revenue_",
+      "social_subscription_",
+      "social_treasury_",
+      "social_vesting_",
+      "spot_",
+      "spt_",
+      "subscription_"
+    ],
+    "queryKeysNotDeclaredByReadQuery": [],
+    "inputSchemaKeysNotMappedToRoute": [],
+    "routeKeysMissingFromInputSchemas": [],
+    "queryKeyDeclarationAuditComplete": true,
+    "inputSchemaToRouteKeyParityComplete": true,
+    "parameterAndResponseFieldParity": "social_family_response_and_scope_checked; ai_credit_all_read_contracts_owner_identity_and_i64_bounds_checked; payment_coin_balance_owner_coins_exact_transfer_quote_historical_effect_receipt_source_checked; subscription_owner_scope_quote_receipt_and_filtered_cursor_pagination_checked; task_lists_participant_scope_deduplication_and_stable_order_checked; task_market_seller_ranking_filters_sort_and_identity_checked; task_history_participant_scope_deduplication_and_source_order_checked; mydata_graph_offer_pages_exact_fields_i64_bounds_unique_ids_and_source_order_checked; mydata_owned_listing_owner_scope_paid_graph_inclusion_and_source_order_checked; mydata_history_owner_scope_identity_and_timestamp_id_order_checked; messaging_exact_dtos_owner_binding_live_membership_evidence_and_capability_checks_checked; poc_public_lists_exact_fields_identity_and_deterministic_page_order_checked; config_badge_exact_fields_i64_bounds_latest_revocation_semantics_and_stable_paging_checked; promotion_filters_exact_fields_i64_bounds_and_stable_order_checked; asset_reads_owner_scope_exact_u64_page_cursors_and_canonical_scoped_effect_receipts_checked; agent_admin_owner_scope_unique_targets_quote_authority_and_receipt_account_binding_checked; dex_swap_receipt_scoped_status_and_fill_total_consistency_checked; organization_owned_owner_scope_unique_ids_and_stable_paging_checked; organization_leaderboard_exact_fields_rank_category_metric_and_stable_tiebreak_order_checked; other_families_still_need_field_and_authorization_checks",
+    "socialReadFamily": {
+      "toolCount": 94,
+      "responseContractCount": 94,
+      "toolsMissingSocialReadScope": [],
+      "toolsMissingResponseContract": [],
+      "callerSuppliedAddressUsedAsPrincipal": false,
+      "complete": true
+    },
+    "hostedResponseValidation": {
+      "countsByFamily": {
+        "social": 94,
+        "config": 4,
+        "badge": 2,
+        "promotions": 12,
+        "organization": 8,
+        "aiCredit": 5,
+        "myData": 32,
+        "payments": 4,
+        "subscriptions": 6,
+        "agentAdmin": 7,
+        "agent": 6,
+        "accountAudit": 1,
+        "accountUsage": 1,
+        "poc": 19,
+        "dex": 8,
+        "governance": 3,
+        "action": 3,
+        "messaging": 11,
+        "tasks": 17,
+        "jury": 13,
+        "assets": 4,
+        "organizationTreasury": 2,
+        "organizationPublic": 7,
+        "spot": 3,
+        "spt": 27
+      },
+      "validatedToolCount": 299,
+      "familyMembershipOccurrences": 299,
+      "toolsInMultipleFamilies": [],
+      "toolsMissingResponseValidationCount": 0,
+      "complete": true
+    },
+    "organizationRoleProofCoverage": "source_audited_all_14: ten sensitive reads require dashboard_viewer/auditor grants or live owner/admin checks; three category/org-profile/leaderboard reads are public; one owned-organization read is bound to the authenticated owner; deployment/runtime is not audited",
+    "deploymentReadiness": "not_audited"
+  },
+  "authorityNotes": {
+    "identity": "Inputs and scopes are inventoried from the MCP registry; actual principal binding and per-resource role checks must be verified in the gateway and server handler.",
+    "readDependencies": "The server dispatcher and downstream fullnode, indexer, social-server, messaging, automation, and AI-credit dependencies are not inferred as authoritative from route names.",
+    "builders": "GET query tools do not construct transactions. Mutating actions and their builders are tracked in myso-agents-current-action-coverage.json.",
+    "effectVerification": "Receipt-named reads require action-specific fullnode verification; ordinary list/detail reads are snapshots and do not prove finalized effects or live authority.",
+    "deploymentGate": "Feature flags, package IDs, service credentials, network compatibility, and hosted adapters remain per-tool gates and require a separate config audit."
+  },
+  "tools": [
+    {
+      "name": "account_get_memory_usage",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/account_memory_usage",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "account_list_audit_logs",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/account_audit_logs",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "action",
+        "target_type",
+        "source"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "action",
+        "target_type",
+        "source"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_get_quote",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_quote",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_get_receipt",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_list",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_list",
+      "inputParameters": [
+        "limit",
+        "cursor"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "cursor"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_owner_rotation_manifest",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_rotation_manifest",
+      "inputParameters": [
+        "state",
+        "limit",
+        "cursor"
+      ],
+      "requiredParameters": [
+        "state"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "state",
+        "limit",
+        "cursor"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_owner_rotation_progress",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_rotation_progress",
+      "inputParameters": [
+        "state",
+        "limit",
+        "cursor"
+      ],
+      "requiredParameters": [
+        "state"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "state",
+        "limit",
+        "cursor"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_owner_rotation_receipt",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_rotation_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_admin_owner_rotation_status",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_admin_rotation_status",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_get_own_pnl",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_own_pnl",
+      "inputParameters": [
+        "window"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_get_reputation",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_reputation",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_list_children",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_children",
+      "inputParameters": [
+        "active_only",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "active_only",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_list_owned_pnl",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_owned_pnl",
+      "inputParameters": [
+        "active_only",
+        "limit",
+        "offset",
+        "window"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "active_only",
+        "limit",
+        "offset",
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_list_profile_agents",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_profile_agents",
+      "inputParameters": [
+        "id",
+        "active_only",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "active_only",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "agent_list_receipts",
+      "oauthScope": "chain:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_receipts",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "ai_get_balance",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/ai_balance",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "ai_get_reservation",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/ai_reservation",
+      "inputParameters": [
+        "reservation_nonce"
+      ],
+      "requiredParameters": [
+        "reservation_nonce"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "reservation_nonce"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "ai_list_approvals",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/ai_approvals",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status",
+        "agent"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status",
+        "agent"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "ai_list_reservations",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/ai_reservations",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "ai_list_usage",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/ai_usage",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "assets_get_burn_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/assets_burn_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "assets_get_owned_object",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/assets_owned_object",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "assets_get_transfer_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/assets_transfer_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "assets_list_owned_objects",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/assets_owned_objects",
+      "inputParameters": [
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "badge_get",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/badge_get",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "badge_list",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/badge_list",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "chain_find_action_by_idempotency_key",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/chain_action_by_idempotency_key",
+      "inputParameters": [
+        "idempotency_key"
+      ],
+      "requiredParameters": [
+        "idempotency_key"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "idempotency_key"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "chain_get_action_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/chain_action_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "chain_list_action_approvals",
+      "oauthScope": "social:approve",
+      "method": "GET",
+      "path": "/api/agent/read/chain_action_approvals",
+      "inputParameters": [
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "config_ai_credit",
+      "oauthScope": "ai:read",
+      "method": "GET",
+      "path": "/api/agent/read/config_ai_credit",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "config_memory",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/config_memory",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "config_platform",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/config_platform",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "config_profile",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/config_profile",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_indexer_status",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_status",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_market",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_market",
+      "inputParameters": [
+        "pool_name"
+      ],
+      "requiredParameters": [
+        "pool_name"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "pool_name"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_orderbook",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_orderbook",
+      "inputParameters": [
+        "pool_name",
+        "levels_per_side"
+      ],
+      "requiredParameters": [
+        "pool_name"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "pool_name",
+        "levels_per_side"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_summary",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_summary",
+      "inputParameters": [
+        "pool_name"
+      ],
+      "requiredParameters": [
+        "pool_name"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "pool_name"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_swap_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_get_ticker",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_ticker",
+      "inputParameters": [
+        "pool_name"
+      ],
+      "requiredParameters": [
+        "pool_name"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "pool_name"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_list_markets",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_markets",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "dex_list_trades",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/dex_trades",
+      "inputParameters": [
+        "pool_name",
+        "limit"
+      ],
+      "requiredParameters": [
+        "pool_name"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "pool_name",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "governance_get_delegate_vote_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/governance_delegate_vote_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "governance_get_vote_quote",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/governance_vote_quote",
+      "inputParameters": [
+        "registryId",
+        "proposalId",
+        "voteCount"
+      ],
+      "requiredParameters": [
+        "registryId",
+        "proposalId",
+        "voteCount"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "registryId",
+        "proposalId",
+        "voteCount"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "governance_get_vote_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/governance_vote_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_action_receipt",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_case",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_case",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_case_bundle",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_case_bundle",
+      "inputParameters": [
+        "id",
+        "round"
+      ],
+      "requiredParameters": [
+        "id",
+        "round"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "round"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_own_profile",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_own_profile",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_proposal_case",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_proposal_case",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_proposal_vote_refunds",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_proposal_vote_refunds",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_get_task_dispute",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_task_dispute",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_health",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_health",
+      "inputParameters": [
+        "min_roster"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "min_roster"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_list_assignments",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_assignments",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_list_case_rationales",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_case_rationales",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_list_cases",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_cases",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "state",
+        "subject_kind",
+        "subject_id"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "state",
+        "subject_kind",
+        "subject_id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_list_cranks",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_cranks",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "jury_list_roster",
+      "oauthScope": "jury:read",
+      "method": "GET",
+      "path": "/api/agent/read/jury_roster",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_group_creation_receipt",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_group_creation_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_membership_change_receipt",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_membership_change_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_message_receipt",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_message_receipt",
+      "inputParameters": [
+        "id",
+        "seq"
+      ],
+      "requiredParameters": [
+        "id",
+        "seq"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "seq"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_my_revenue_summary",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_owner_revenue",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_room_details",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_room",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_get_task_room_binding_receipt",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_room_binding_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_list_my_paid_message_history",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_owner_paid_history",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_list_my_wallet_history",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_owner_history",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_list_room_digests",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_group_digests",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "messaging_list_room_members",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_group_members",
+      "inputParameters": [
+        "id",
+        "limit",
+        "cursor"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "cursor"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_check_indexed_access",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_has_access",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_indexed_access_analytics",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_access_analytics",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_indexed_configuration",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_indexed_listing",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_listing",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_indexed_revenue_timeline",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_revenue_timeline",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_indexed_stats",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_stats",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_owner_access_receipt",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_owner_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_purchase_quote",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_quote",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_purchase_receipt",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_snapshot_anchor",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_snapshot_anchor",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_snapshot_distribution",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_snapshot_distribution",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_snapshot_escrow",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_snapshot_escrow",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_get_snapshot_merkle_root",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_snapshot_merkle_root",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_agent_funding_coins",
+      "oauthScope": "mydata:purchase",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_agent_funding_coins",
+      "inputParameters": [
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_broad_pool_sub_pools",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_broad_pool_sub_pools",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_broad_pools",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_broad_pools",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_creator_listings",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_creator_listings",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_distribution_rounds",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_distribution_rounds",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_graph_offers",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_graph_offers",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_indexed_access_logs",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_access_logs",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_indexed_purchases",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_purchases",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_indexed_revenue",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_revenue",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_indexed_subscriptions",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_subscriptions",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_listing_sub_pools",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_listing_sub_pools",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_listings",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_listings",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_my_purchases",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_buyer_purchases",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_owned_listings",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_owned_listings",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_owner_access_history",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/mydata_owner_access_history",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_popular_indexed",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_popular",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_snapshot_claims",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_snapshot_claims",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_list_sub_pool_listings",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_sub_pool_listings",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "mydata_read_indexed_catalog",
+      "oauthScope": "mydata:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_mydata_list",
+      "inputParameters": [
+        "creator",
+        "media_type",
+        "platform_id",
+        "sort_by",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "creator",
+        "media_type",
+        "platform_id",
+        "sort_by",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_get",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_get_statistics",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_statistics",
+      "inputParameters": [
+        "id",
+        "window"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_get_treasury_access",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_treasury_access",
+      "inputParameters": [
+        "id",
+        "recipient"
+      ],
+      "requiredParameters": [
+        "id",
+        "recipient"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "recipient"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_get_treasury_balance",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_treasury_balance",
+      "inputParameters": [
+        "id",
+        "coinType"
+      ],
+      "requiredParameters": [
+        "id",
+        "coinType"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "coinType"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_audit_logs",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_audit_logs",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "action",
+        "actor",
+        "target_type",
+        "source"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "action",
+        "actor",
+        "target_type",
+        "source"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_categories",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_categories",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_invitations",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_invitations",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_leaderboard",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_leaderboard",
+      "inputParameters": [
+        "sort",
+        "category",
+        "window",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "sort",
+        "category"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "sort",
+        "category",
+        "window",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_memory_permissions",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_memory_permissions",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_messaging_groups",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_groups",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_my_invitations",
+      "oauthScope": "agent:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_my_invitations",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_owned",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_owned",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "active_only",
+        "org_type"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "active_only",
+        "org_type"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_role_assignments",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_role_assignments",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "member",
+        "active_only"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_roles",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_roles",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_rooms",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_rooms",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_spend_approvals",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_spend_approvals",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status",
+        "agent"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status",
+        "agent"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "organization_list_spend_breakdown",
+      "oauthScope": "organization:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_spend_breakdown",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "window"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "payments_get_balance",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/payments_balance",
+      "inputParameters": [
+        "coinType"
+      ],
+      "requiredParameters": [
+        "coinType"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "coinType"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "payments_get_transfer_quote",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/payments_quote",
+      "inputParameters": [
+        "id",
+        "coinType",
+        "recipient",
+        "amountBaseUnits"
+      ],
+      "requiredParameters": [
+        "id",
+        "coinType",
+        "recipient",
+        "amountBaseUnits"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "coinType",
+        "recipient",
+        "amountBaseUnits"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "payments_get_transfer_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/payments_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "payments_list_coins",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/payments_coins",
+      "inputParameters": [
+        "coinType",
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [
+        "coinType"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "coinType",
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_analytics",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_analytics",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_badge",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_badge",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_beneficiary_transfer_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/poc_beneficiary_transfer_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_beneficiary_vault",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_vault",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_claim_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/poc_claim_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_configuration",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_dispute",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_dispute",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_username_beneficiary",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_username_beneficiary",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_username_beneficiary_by_username",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_username_beneficiary_by_username",
+      "inputParameters": [
+        "username"
+      ],
+      "requiredParameters": [
+        "username"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "username"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_get_vault_for_beneficiary",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_vault_by_beneficiary",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_analysis_results",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_analysis_results",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_badges",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_badges",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_dispute_votes",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_dispute_votes",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_disputes",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_disputes",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_revenue_redirections",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_revenue_redirections",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_username_beneficiaries",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_username_beneficiaries",
+      "inputParameters": [
+        "status",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "status",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_vault_claims",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_vault_claims",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_vault_coin_balances",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_vault_balances",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "poc_list_vault_deposits",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_poc_vault_deposits",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_campaign",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_campaign",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_hourly",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_hourly",
+      "inputParameters": [
+        "id",
+        "limit",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_platform_breakdown",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_platform_breakdown",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_rollup",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_rollup",
+      "inputParameters": [
+        "owner",
+        "profile_id",
+        "platform_id",
+        "post_id",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "owner",
+        "profile_id",
+        "platform_id",
+        "post_id",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_spending_trends",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_spending_trends",
+      "inputParameters": [
+        "limit",
+        "bucket",
+        "from",
+        "to",
+        "owner",
+        "platform_id"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "bucket",
+        "from",
+        "to",
+        "owner",
+        "platform_id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_stats",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_stats",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_get_time_series",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_time_series",
+      "inputParameters": [
+        "id",
+        "limit",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "bucket",
+        "from",
+        "to"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_list_budget_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_budget_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_list_campaigns",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_campaigns",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "page",
+        "owner",
+        "profile_id",
+        "platform_id",
+        "post_id",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "page",
+        "owner",
+        "profile_id",
+        "platform_id",
+        "post_id",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_list_status_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_status_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset",
+        "page"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_list_top_performing",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_top_performing",
+      "inputParameters": [
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "promotion_list_views",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/promotion_views",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset",
+        "from",
+        "to",
+        "platform_id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset",
+        "from",
+        "to",
+        "platform_id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "room_list",
+      "oauthScope": "messaging:read",
+      "method": "GET",
+      "path": "/api/agent/read/rooms",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_either_profile_blocked",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_check_either_profile_blocked",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_follow_relationship",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_follow_check",
+      "inputParameters": [
+        "follower",
+        "following"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "follower",
+        "following"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_following",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_check_following",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_platform_blocked",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_check_platform_blocked",
+      "inputParameters": [
+        "id",
+        "platform_id"
+      ],
+      "requiredParameters": [
+        "id",
+        "platform_id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "platform_id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_platform_membership",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_membership",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_profile_blocked",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_check_profile_blocked",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_check_subscription_access",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_access",
+      "inputParameters": [
+        "address",
+        "serviceId",
+        "min_tier_level"
+      ],
+      "requiredParameters": [
+        "address",
+        "serviceId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "serviceId",
+        "min_tier_level"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_creator_revenue_stats",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_creator",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_daily_stats",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_daily_stats",
+      "inputParameters": [
+        "bucket"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "bucket"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_graph_chart_data",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_graph_chart",
+      "inputParameters": [
+        "bucket"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "bucket"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_insurance_configuration",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_insurance_policy",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_policy",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_insurance_vault",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_vault",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_messaging_configuration",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_messaging_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_platform",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_platform_approval",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_approval",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_platform_revenue_stats",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_platform",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_platform_treasury",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_treasury",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_platform_user_access",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_user_access",
+      "inputParameters": [
+        "id",
+        "address"
+      ],
+      "requiredParameters": [
+        "id",
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_post",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_post_promotion",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_promotion",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_profile",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_profile_by_username",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_username",
+      "inputParameters": [
+        "username"
+      ],
+      "requiredParameters": [
+        "username"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "username"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_profile_pnl",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_pnl",
+      "inputParameters": [
+        "id",
+        "window"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_profile_stats",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_stats",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_revenue_chart",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_chart",
+      "inputParameters": [
+        "creator",
+        "period",
+        "points",
+        "start_date",
+        "end_date",
+        "revenue_source"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "creator",
+        "period",
+        "points",
+        "start_date",
+        "end_date",
+        "revenue_source"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_revenue_dashboard",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_dashboard",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_service_performance",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_service_performance",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscriber_summary",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_subscriber_summary",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscription",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_get",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscription_analytics",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_analytics",
+      "inputParameters": [
+        "serviceId",
+        "address",
+        "start_date",
+        "end_date"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "address",
+        "start_date",
+        "end_date"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscription_configuration",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscription_service",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_service",
+      "inputParameters": [
+        "serviceId"
+      ],
+      "requiredParameters": [
+        "serviceId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_subscription_status",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_status",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_treasury_current",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_treasury_current",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_vesting_analytics",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_analytics",
+      "inputParameters": [
+        "coin_type"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "coin_type"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_vesting_claimable",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_claimable",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_vesting_leaderboard",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_leaderboard",
+      "inputParameters": [
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_get_vesting_wallet",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_wallet",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_active_vesting_wallets",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_active_wallets",
+      "inputParameters": [
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_approved_platforms",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_approved_platforms",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_governance_proposals",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_governance_proposals",
+      "inputParameters": [
+        "status",
+        "proposal_type",
+        "platform_id",
+        "submitter",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "status",
+        "proposal_type",
+        "platform_id",
+        "submitter",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_insurance_market_policies",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_market_policies",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_insurance_policies",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_policies",
+      "inputParameters": [
+        "insured",
+        "market_id",
+        "vault_id",
+        "status",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "insured",
+        "market_id",
+        "vault_id",
+        "status",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_insurance_vault_exposures",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_vault_exposures",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_insurance_vault_transactions",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_vault_transactions",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_insurance_vaults",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_insurance_vaults",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platform_blocked_profiles",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_blocked",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platform_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platform_members",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_members",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platform_moderators",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_moderators",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platform_treasury_withdrawals",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platform_treasury_withdrawals",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_platforms",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_platforms",
+      "inputParameters": [
+        "approved",
+        "governance",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "approved",
+        "governance",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_comments",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_comments",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_deletion_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_deletion_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_moderation_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_moderation_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_poc_badges",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_poc_badges",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_reactions",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_reactions",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_reports",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_reports",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_reposts",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_reposts",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_revenue_redirections",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_revenue_redirections",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_post_transfers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_post_transfers",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_posts",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_posts",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_badges",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_badges",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_blocked",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_blocked",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_blocked_platforms",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_blocked_platforms",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_blocking_history",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_blocking_history",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_followers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_followers",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_following",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_following",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_platform_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_platform_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_platform_memberships",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_platform_memberships",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_posts",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_posts",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_recommendations",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_recommendations",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_subscription_services",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_profile_services",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_username_offers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_username_offers",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profile_username_sale_fees",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profile_username_sale_fees",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_profiles",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_profiles",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_revenue_leaderboard",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_leaderboard",
+      "inputParameters": [
+        "limit",
+        "min_revenue",
+        "period_days",
+        "revenue_source"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "min_revenue",
+        "period_days",
+        "revenue_source"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_service_subscription_revenue",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_service_revenue",
+      "inputParameters": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "serviceId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_subscription_plans",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_plans",
+      "inputParameters": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "serviceId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_subscription_revenue",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_revenue",
+      "inputParameters": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_subscription_services",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_services",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_subscriptions",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_list",
+      "inputParameters": [
+        "address",
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "serviceId",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_subscriptions_by_subscriber",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_subscription_by_subscriber",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_treasury_history",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_treasury_history",
+      "inputParameters": [
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_trending_posts",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_trending_posts",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_unified_revenue",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_revenue_unified",
+      "inputParameters": [
+        "creator",
+        "platform_id",
+        "revenue_source",
+        "revenue_type",
+        "content_id",
+        "content_type",
+        "start_date",
+        "end_date",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "creator",
+        "platform_id",
+        "revenue_source",
+        "revenue_type",
+        "content_id",
+        "content_type",
+        "start_date",
+        "end_date",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_user_vesting_wallets",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_user_wallets",
+      "inputParameters": [
+        "address",
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_username_offers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_username_offers",
+      "inputParameters": [
+        "username",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "username"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "username",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_vesting_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_events",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_vesting_wallet_events",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_wallet_events",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_list_vesting_wallets",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_vesting_wallets",
+      "inputParameters": [
+        "address",
+        "active",
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "active",
+        "coin_type",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "social_search",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/social_search",
+      "inputParameters": [
+        "query",
+        "page",
+        "limit",
+        "filter_types"
+      ],
+      "requiredParameters": [
+        "query"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "query",
+        "page",
+        "limit",
+        "filter_types"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spot_get_bet_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/spot_bet_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spot_get_claim_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/spot_claim_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spot_get_market_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/spot_market_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_configuration",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_configuration",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_market_sentiment",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_market_sentiment",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_pool",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_pool_by_associated_id",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_by_associated_id",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_pool_liquidity_profile",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_liquidity_profile",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_portfolio_performance",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_portfolio_performance",
+      "inputParameters": [
+        "address"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_position_metrics",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_position_metrics",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_position_timeseries",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_position_timeseries",
+      "inputParameters": [
+        "address",
+        "id",
+        "window"
+      ],
+      "requiredParameters": [
+        "address",
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "id",
+        "window"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_reservation_pool",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_reservation_pool",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_reservation_volume_history",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_reservation_volume_history",
+      "inputParameters": [
+        "id",
+        "interval",
+        "limit",
+        "from",
+        "to"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "interval",
+        "limit",
+        "from",
+        "to"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_top_performers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_top_performers",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_trade_quote",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_quote",
+      "inputParameters": [
+        "poolId",
+        "tradeKind",
+        "amountBaseUnits"
+      ],
+      "requiredParameters": [
+        "poolId",
+        "tradeKind",
+        "amountBaseUnits"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "poolId",
+        "tradeKind",
+        "amountBaseUnits"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_trade_receipt",
+      "oauthScope": "payments:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_trade_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_get_user_holdings",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_user_holdings",
+      "inputParameters": [
+        "address",
+        "include_reservations",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "include_reservations",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_creator_revenue_streams",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_creator_revenue_streams",
+      "inputParameters": [
+        "address",
+        "from",
+        "to"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "from",
+        "to"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_holdings",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_holdings",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_price_history",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_price_history",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_revenue",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_revenue",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_swaps",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_swaps",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_transactions",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_transactions",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pool_transfers",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pool_transfers",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_pools",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_pools",
+      "inputParameters": [
+        "address",
+        "token_type",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "token_type",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_popular_pools",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_popular",
+      "inputParameters": [
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_reservation_pools",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_reservation_pools",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_reservations",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_reservation_pool_reservations",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_trader_leaderboard",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_trader_leaderboard",
+      "inputParameters": [
+        "window",
+        "sort",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "window",
+        "sort",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "spt_list_user_reservations",
+      "oauthScope": "social:read",
+      "method": "GET",
+      "path": "/api/agent/read/spt_user_reservations",
+      "inputParameters": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "address"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "address",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_get",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_get",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_get_plan_quote",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_quote",
+      "inputParameters": [
+        "serviceId",
+        "planId"
+      ],
+      "requiredParameters": [
+        "serviceId",
+        "planId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "planId"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_get_receipt",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_get_renewal_quote",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_renewal_quote",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_list",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_list",
+      "inputParameters": [
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "subscription_list_plans",
+      "oauthScope": "subscription:read",
+      "method": "GET",
+      "path": "/api/agent/read/subscription_plans",
+      "inputParameters": [
+        "serviceId",
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [
+        "serviceId"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "serviceId",
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_config",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_config",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_deliverable",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_deliverable",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_dispute",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_dispute",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_lifecycle_history",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_lifecycle_history",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_receipt",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_room",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_room",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_get_settlement_receipt",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_settlement_receipt",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_list",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/tasks",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "role",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "role",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_list_agent_funding_coins",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_agent_funding_coins",
+      "inputParameters": [
+        "cursor",
+        "limit"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "cursor",
+        "limit"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_list_for_agent",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/agent_tasks",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "role",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "role",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_list_for_organization",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/organization_tasks",
+      "inputParameters": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset",
+        "status"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_list_history",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_history",
+      "inputParameters": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_market_get_seller_reputation",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_market_seller_reputation",
+      "inputParameters": [
+        "id"
+      ],
+      "requiredParameters": [
+        "id"
+      ],
+      "pathKeys": [],
+      "queryKeys": [
+        "id"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_market_get_stats",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_market_stats",
+      "inputParameters": [],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_market_list",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_market",
+      "inputParameters": [
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    },
+    {
+      "name": "task_market_list_sellers",
+      "oauthScope": "tasks:read",
+      "method": "GET",
+      "path": "/api/agent/read/task_market_sellers",
+      "inputParameters": [
+        "sort",
+        "min_reviews",
+        "limit",
+        "offset"
+      ],
+      "requiredParameters": [],
+      "pathKeys": [],
+      "queryKeys": [
+        "sort",
+        "min_reviews",
+        "limit",
+        "offset"
+      ],
+      "unknownServerQueryKeys": []
+    }
+  ]
+}
