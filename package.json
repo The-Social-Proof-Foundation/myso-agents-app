@@ -35,7 +35,7 @@
 		"@socialproof/memory": "0.0.6",
 		"@socialproof/mydata": "0.0.4",
 		"@socialproof/myso": "0.0.4",
-		"@socialproof/myso-messaging-stack": "link:../myso-messaging-stack/ts-sdks/packages/myso-messaging-stack",
+		"@socialproof/myso-messaging-stack": "0.3.0",
 		"@socialproof/walletconnect-wallet": "0.0.4",
 		"@streamdown/cjk": "^1.0.3",
 		"@streamdown/code": "^1.1.1",

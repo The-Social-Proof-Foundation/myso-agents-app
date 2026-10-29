@@ -1,21 +1,6 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
-const projectDir = path.dirname(fileURLToPath(import.meta.url));
-
 const nextConfig: NextConfig = {
-    transpilePackages: ["@socialproof/myso-messaging-stack"],
-    // pnpm link: points at the sibling messaging SDK, outside this app's
-    // lockfile root. Turbopack refuses that symlink unless the target tree
-    // (package + its ts-sdks virtual store) is an additional root.
-    experimental: {
-        turbopackAdditionalRoots: {
-            "myso-messaging-stack": {
-                path: path.resolve(projectDir, "../myso-messaging-stack/ts-sdks"),
-            },
-        },
-    },
     // Development request URLs include OAuth codes/state. Do not forward those
     // URLs or Server Function arguments into terminal/desktop log files.
     logging: false,
