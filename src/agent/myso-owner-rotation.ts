@@ -160,14 +160,36 @@ export function buildAcceptOwnerRotationBatchTransaction(
         });
     }
     if (finalize) {
+        // Recipient confirms; the old owner then completes with buildCompleteOwnerRotationTransaction.
         tx.moveCall({
-            target: `${context.chain.packageId}::profile::accept_owner_rotation`,
-            arguments: [
-                tx.object(context.chain.usernameRegistryId), tx.object(context.chain.memoryRegistryId),
-                account, tx.object(context.profileId), tx.object(context.chain.clockId ?? CLOCK),
-            ],
+            target: `${context.chain.packageId}::memory::accept_owner_rotation`,
+            arguments: [account, tx.object(context.chain.clockId ?? CLOCK)],
         });
     }
+    return tx;
+}
+
+/**
+ * Old owner's final step: hands the owned Profile over by value. Move moves the MemoryAccount,
+ * AiCreditBalance, username-registry owner index and Profile to the recipient atomically.
+ */
+export function buildCompleteOwnerRotationTransaction(
+    context: OwnerRotationTxContext,
+    oldOwner: string,
+    aiCreditBalanceId: string,
+): Transaction {
+    const tx = buildBase(context, oldOwner);
+    tx.moveCall({
+        target: `${context.chain.packageId}::profile::complete_owner_rotation`,
+        arguments: [
+            tx.object(context.chain.usernameRegistryId),
+            tx.object(context.chain.memoryRegistryId),
+            tx.object(context.accountId),
+            tx.object(objectId(aiCreditBalanceId, "AI credit balance ID")),
+            tx.object(context.profileId),
+            tx.object(context.chain.clockId ?? CLOCK),
+        ],
+    });
     return tx;
 }
 
