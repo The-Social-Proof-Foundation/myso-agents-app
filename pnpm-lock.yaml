@@ -42,8 +42,11 @@ importers:
         specifier: 0.0.4
         version: 0.0.4(typescript@5.9.3)
       '@socialproof/myso-messaging-stack':
-        specifier: 0.3.0
-        version: 0.3.0(@socialproof/bcs@0.0.2)(@socialproof/mydata@0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso-groups@0.0.1(@socialproof/bcs@0.0.2)(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso@0.0.4(typescript@5.9.3))
+        specifier: 0.3.3
+        version: 0.3.3(@socialproof/bcs@0.0.2)(@socialproof/mydata@0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso-groups@0.0.1(@socialproof/bcs@0.0.2)(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso@0.0.4(typescript@5.9.3))
+      '@socialproof/myso-mls':
+        specifier: 0.1.0
+        version: 0.1.0
       '@socialproof/walletconnect-wallet':
         specifier: 0.0.4
         version: 0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3))(@types/react@19.3.0)(react@19.3.1)(typescript@5.9.3)(use-sync-external-store@1.7.0(react@19.3.1))(zod@4.6.7)
@@ -2099,13 +2102,16 @@ packages:
       '@socialproof/bcs': ^0.0.2
       '@socialproof/myso': ^0.0.4
 
-  '@socialproof/myso-messaging-stack@0.3.0':
-    resolution: {integrity: sha512-nmwTDI80ubYY2Hp2ZUWHraBWUEFoE0Snuu4VPDagM2z7iWp0N8xCJgL5BNOyXI2u0H//h71ZwwVAehSJQtjh9Q==}
+  '@socialproof/myso-messaging-stack@0.3.3':
+    resolution: {integrity: sha512-PnELKnNn99XaNAMBxZLlJuHbfY32PUkUdOuCaFr0qSufE69i62gskt6q3Em9/Bn3AO2PAw/U2qXLR2YbMErz2Q==}
     peerDependencies:
       '@socialproof/bcs': ^0.0.2
       '@socialproof/mydata': ^0.0.4
       '@socialproof/myso': ^0.0.4
       '@socialproof/myso-groups': ^0.0.1
+
+  '@socialproof/myso-mls@0.1.0':
+    resolution: {integrity: sha512-dt+e7/yMvBT+jiVNNvatC7amm3a4W5eb4kWbtzzvw+bKGrW7iSkxugIBksjt/6STEvK0oZ/G7rCWxxHE/Rl3Hw==}
 
   '@socialproof/myso@0.0.4':
     resolution: {integrity: sha512-3SbHrYfv9JdoFQuKAcdWXPUc7viVeMtkmm2/fnQiK7lvg0kmFKt00JEt1apDlG1T0ltPv/uMYUv3hL+cerRDyQ==}
@@ -9067,13 +9073,15 @@ snapshots:
       '@socialproof/bcs': 0.0.2
       '@socialproof/myso': 0.0.4(typescript@5.9.3)
 
-  '@socialproof/myso-messaging-stack@0.3.0(@socialproof/bcs@0.0.2)(@socialproof/mydata@0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso-groups@0.0.1(@socialproof/bcs@0.0.2)(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso@0.0.4(typescript@5.9.3))':
+  '@socialproof/myso-messaging-stack@0.3.3(@socialproof/bcs@0.0.2)(@socialproof/mydata@0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso-groups@0.0.1(@socialproof/bcs@0.0.2)(@socialproof/myso@0.0.4(typescript@5.9.3)))(@socialproof/myso@0.0.4(typescript@5.9.3))':
     dependencies:
       '@noble/hashes': 2.4.0
       '@socialproof/bcs': 0.0.2
       '@socialproof/mydata': 0.0.4(@socialproof/myso@0.0.4(typescript@5.9.3))
       '@socialproof/myso': 0.0.4(typescript@5.9.3)
       '@socialproof/myso-groups': 0.0.1(@socialproof/bcs@0.0.2)(@socialproof/myso@0.0.4(typescript@5.9.3))
+
+  '@socialproof/myso-mls@0.1.0': {}
 
   '@socialproof/myso@0.0.4(typescript@5.9.3)':
     dependencies:
