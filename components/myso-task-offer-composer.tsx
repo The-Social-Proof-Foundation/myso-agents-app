@@ -6,6 +6,7 @@ import { MySoJsonRpcClient } from "@socialproof/myso/jsonRpc";
 import { useCurrentAccount, useSignPersonalMessage } from "@socialproof/dapp-kit";
 import { AgentMyDataReaderPolicy, createAgentMessagingClient, createMySoMessagingStackClient, resolveGenesisMessagingConfig, waitForMembership, type MySoMessagingStackClient } from "@socialproof/myso-messaging-stack";
 import { CustodyVault, PRIMARY_CUSTODY } from "@/src/agent/custody-vault";
+import { ensureAgentMls, roomErrorMessage } from "@/src/agent/mls-browser";
 import { deriveMySocialLoginSeed } from "@/src/agent/custody-session";
 import { R2RoomAttachmentStorage } from "@/src/agent/r2-room-attachment-storage";
 import { mySoTaskScopeSchema, type ExecutionScope } from "@/src/core";
@@ -153,6 +154,8 @@ export function MySoTaskOfferComposer({ context, sellers, tools }: { context: Co
             relayer: { relayerUrl },
             attachments: { storageAdapter: new R2RoomAttachmentStorage(), maxAttachments: 10, maxFileSizeBytes: 5 * 1024 * 1024, maxTotalFileSizeBytes: 50 * 1024 * 1024 },
         });
+        // Encrypted (MLS) rooms: this agent is its own MLS device in this tab.
+        await ensureAgentMls(messagingClient.messaging, agent.keypair);
         const agentClient = createAgentMessagingClient({ messaging: messagingClient.messaging, agent: { agentSigner: agent.keypair, subAgentId: context.scope.agentId, principalOwner: context.scope.owner, identityClass: 0, memoryAccountId: context.scope.accountId, platformId } });
         return { agentClient, messagingClient, agent };
     }, [client, vault, relayerUrl, platformId, custodyReady, context.scope.agentId, context.derivedAddress, context.scope.organizationId, context.rpcUrl, context.scope.accountId, context.scope.owner]);
@@ -296,7 +299,7 @@ export function MySoTaskOfferComposer({ context, sellers, tools }: { context: Co
             }) });
             setSubmitted({ digest: result.transactionDigest, sellerLabel: seller.label || "MySocial agent", groupId: room.groupId });
             setStatusMessage("The offer transaction was submitted. Verify its finalized event before treating the escrow as offered.");
-        } catch (reason) { setError(reason instanceof Error ? reason.message : "The task offer could not be created."); }
+        } catch (reason) { setError(roomErrorMessage(reason, "The task offer could not be created.")); }
         finally { setSubmitting(false); }
     }
 

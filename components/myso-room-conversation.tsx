@@ -7,6 +7,7 @@ import { useConnectWallet, useCurrentAccount, useSignPersonalMessage, useWallets
 import { AgentMyDataReaderPolicy, createAgentMessagingClient, createMySoMessagingStackClient, messagingPermissionTypes, resolveGenesisMessagingConfig, type DecryptedMessage } from "@socialproof/myso-messaging-stack";
 import type { ExecutionScope } from "@/src/core";
 import { CustodyVault, PRIMARY_CUSTODY } from "@/src/agent/custody-vault";
+import { ensureAgentMls, roomErrorMessage } from "@/src/agent/mls-browser";
 import { deriveMySocialLoginSeed } from "@/src/agent/custody-session";
 import { R2RoomAttachmentStorage } from "@/src/agent/r2-room-attachment-storage";
 
@@ -139,6 +140,8 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
             relayer: { relayerUrl },
             attachments: { storageAdapter: new R2RoomAttachmentStorage(), maxAttachments: 10, maxFileSizeBytes: MAX_FILE_BYTES, maxTotalFileSizeBytes: 10 * MAX_FILE_BYTES },
         });
+        // Encrypted (MLS) rooms: this agent is its own MLS device in this tab.
+        await ensureAgentMls(messagingClient.messaging, agent.keypair);
         const agentClient = createAgentMessagingClient({ messaging: messagingClient.messaging, agent: { agentSigner: agent.keypair, subAgentId: context.scope.agentId, principalOwner: context.scope.owner, identityClass: 0, memoryAccountId: context.scope.accountId, platformId } });
         return { messagingClient, agentClient, agent };
     }, [client, context.derivedAddress, context.rpcUrl, context.scope.accountId, context.scope.agentId, context.scope.owner, context.socialChain, platformId, relayerUrl, vault]);
@@ -172,7 +175,7 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
                     }
                 }
             } catch (reason) {
-                if (active && !controller.signal.aborted) setError(reason instanceof Error ? `Room live updates stopped: ${reason.message}` : "Room live updates stopped");
+                if (active && !controller.signal.aborted) setError(`Room live updates stopped: ${roomErrorMessage(reason, "unknown error")}`);
             }
         })();
         return () => { active = false; controller.abort(); };
@@ -189,7 +192,7 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
             const next: typeof reactions = {};
             for (const row of rows) (next[row.chainSeq] ??= {})[row.emoji] = { count: row.count, reactors: row.reactors };
             setReactions(next);
-        } catch (reason) { setError(reason instanceof Error ? reason.message : "Room messages could not be loaded"); }
+        } catch (reason) { setError(roomErrorMessage(reason, "Room messages could not be loaded")); }
         finally { setLoading(false); }
     }
 
@@ -206,7 +209,7 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
             await agentClient.sendMessage({ groupRef: { uuid: room.groupUuid }, ...(text.trim() ? { text: text.trim() } : {}), ...(attachmentFiles.length ? { files: attachmentFiles } : {}) });
             setText(""); setFiles([]);
             await refreshMessages();
-        } catch (reason) { setError(reason instanceof Error ? reason.message : "The room message could not be sent"); }
+        } catch (reason) { setError(roomErrorMessage(reason, "The room message could not be sent")); }
         finally { setSending(false); }
     }
 
@@ -270,7 +273,7 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
             const url = URL.createObjectURL(new Blob([copy.buffer], { type: attachment.mimeType }));
             objectUrl.current = url;
             setPreview({ url, name: attachment.fileName, mimeType: attachment.mimeType });
-        } catch (reason) { setError(reason instanceof Error ? reason.message : "Attachment preview failed"); }
+        } catch (reason) { setError(roomErrorMessage(reason, "Attachment preview failed")); }
     }
 
     async function toggleReaction(message: DecryptedMessage, emoji: string) {
@@ -285,7 +288,7 @@ export function MySoRoomConversation({ context, room, onReconnect }: { context: 
             else await messagingClient.messaging.addReaction(options);
             const rows = await messagingClient.messaging.listReactions({ signer: agent.keypair, groupRef: { uuid: room.groupUuid }, order: message.order });
             setReactions((previous) => ({ ...previous, [message.order]: Object.fromEntries(rows.map((row) => [row.emoji, { count: row.count, reactors: row.reactors }])) }));
-        } catch (reason) { setError(reason instanceof Error ? reason.message : "The reaction could not be updated"); }
+        } catch (reason) { setError(roomErrorMessage(reason, "The reaction could not be updated")); }
     }
 
     const walletMatches = !!account && sameAddress(account.address, context.scope.owner);
